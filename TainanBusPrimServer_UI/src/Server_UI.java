@@ -125,7 +125,7 @@ public class Server_UI extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setBounds(71, 14, 79, 15);
+		lblNewLabel_1.setBounds(71, 14, 110, 15);
 		contentPane.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("網頁伺服器IP :");
@@ -133,7 +133,7 @@ public class Server_UI extends JFrame {
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("New label");
-		lblNewLabel_3.setBounds(102, 43, 79, 15);
+		lblNewLabel_3.setBounds(102, 43, 110, 15);
 		contentPane.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("資料庫 :");
