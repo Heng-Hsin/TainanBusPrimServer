@@ -55,6 +55,9 @@ public class Server_UI extends JFrame {
 	public static JLabel lblNewLabel_5 ;
 	
 	public static String[] IPCIP;
+	public static String[] ThreeGIP;
+	public static String[] MasterIP;
+	
 
 	private static String DBDriver;
 	private static String DB_connect_string;
@@ -296,7 +299,7 @@ public class Server_UI extends JFrame {
 		textField_3.setBounds(128, 19, 197, 21);
 		panel_1.add(textField_3);
 		textField_3.setColumns(10);
-		textField_3.setText("172.23.25.1");
+		textField_3.setText("192.168.234.132");
 		
 		JLabel lblNewLabel_11 = new JLabel("File Path :");
 		lblNewLabel_11.setBounds(31, 54, 70, 15);
@@ -337,7 +340,7 @@ public class Server_UI extends JFrame {
 		            		            		
 		            		try{		            									
 		        				
-		            			String[] AllMastersIP=MSDB.getAllMasters_IP(); 
+		            			String[] AllMastersIP=MSDB.getAllMasters_IP();
 		        				String uploadport="8002";
 		        				String uploadfilepath=textField_4.getText()+"\\";
 		        				String uploadfilename=textField_5.getText();
@@ -640,13 +643,16 @@ public class Server_UI extends JFrame {
 		JButton btnNewButton_6 = new JButton("MultiPing");
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String IP="172.23.25.";
+				
 				PingIP.fullconnection.clear();
 				PingIP.zeroconnection.clear();
 				
-				for(int i=1;i<61;i++){
-					String endvalue = Integer.toString(i);
-					PingIP.OtherThread(IP+endvalue);
+				
+				String[] All3GIP=MSDB.getAll3G_IP();
+				
+				for(String t:All3GIP){
+					
+					PingIP.OtherThread(t);
 					
 				}
 				
@@ -751,10 +757,12 @@ public class Server_UI extends JFrame {
 				
 				//TCPmultiport  multiport =new TCPmultiport();				
 				
-				IPCIP =  MSDB.getIPCIP();
+				//IPCIP =  MSDB.getIPCIP();
+				ThreeGIP = MSDB.getAll3G_IP();
+				MasterIP =MSDB.getAllMasters_IP();
 				
 				DBconnection();
-				//IPCconnection();
+				IPCconnection();
 				//CrossRoadCollector();
 				
 				
@@ -854,22 +862,26 @@ public class Server_UI extends JFrame {
 	                	
 	                    try {
 	                    	
-	                    	String IP="172.23.25.";
+	                    	//String IP="172.23.25.";
 	        				PingIP.fullconnection.clear();
 	        				PingIP.zeroconnection.clear();
 	        				
 	        				
-	        				for(int i=1;i<61;i++){
-	        					String endvalue = Integer.toString(i);
-	        					PingIP.OtherThread(IP+endvalue);
+	        				
+	        				for(String t:ThreeGIP){
+	        					
+	        					PingIP.OtherThread(t);
 	        					
 	        				}
+	        				
+	        				
+	        				
 	                    	Thread.sleep(1000*60*1);
 	                    	System.out.println("IPC Connection Check");
-	                    	btnNewButton_10.doClick();
+	                    	//btnNewButton_10.doClick();
 	                    	//TCPmultiport.LastContact2();
 	                    	
-	                    	for(String t:IPCIP){	                    		
+	                    	for(String t:ThreeGIP){	                    		
 	                    		if(PingIP.zeroconnection.contains(t)){
 	                    			MSDB.updateIPCOnOff(t,5);
 	                    			MSDB.updateIPCStatus(t,7);

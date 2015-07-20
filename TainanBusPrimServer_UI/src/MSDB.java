@@ -198,6 +198,20 @@ public static String[] getAllMasters_IP(){
       return x;
 }
 
+public static String[] getAll3G_IP(){
+	
+	Vector a =dbGetString("SELECT [CrossRoadIP] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] ");
+	
+	String[] x= new String[a.size()];
+     
+      for(int i=0;i<a.size();i++){
+    	x[i]= (String) a.get(i);
+    	    	    	
+    	  //System.out.println(x[i]);
+      }
+      return x;
+}
+
 public static String getTrigPtype(String xroadid , String direct, int order){
 	String ptype="";
 	
@@ -798,7 +812,7 @@ public static boolean check0F04status(String IP){
 	 
 	 
 	try{
-		Vector a =dbGetString("SELECT [TIMEIPCStatus] FROM ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] where [IP]='"+IP+"';");
+		Vector a =dbGetString("SELECT [TIMEIPCStatus] FROM ["+DB_database_name+"].[dbo].[[BusPrority_CrossRoad_Info_Tab]] where [IP]='"+IP+"';");
 		date= a.toString().replace("[", "").replace("]", "");
 		Date IPdate = dateFormat.parse(date);
 		
@@ -849,9 +863,9 @@ public static int updateIPCStatus(String IP,int status){
 	int a=0;
 	
 		if(status==7){
-			 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] SET [IPCStatus]='"+status+"'  WHERE [IP]='"+IP+"' ;");
+			 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] SET [IPCStatus]='"+status+"'  WHERE [IP]='"+IP+"' ;");
 		}else{
-			 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] SET [IPCStatus]='"+status+"' ,[TIMEIPCStatus]=GETDATE() WHERE [IP]='"+IP+"' ;");
+			 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] SET [IPCStatus]='"+status+"' ,[TIMEIPCStatus]=GETDATE() WHERE [IP]='"+IP+"' ;");
 		}
 	
 	 //if(a==0)
@@ -865,7 +879,7 @@ public static int updateIPCOnOff(String IP,int status){
 	int a=0;
 	
 		
-	 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] SET [OnOff]='"+status+"' ,[TIMEOnOff]=GETDATE() WHERE [IP]='"+IP+"' ;");
+	 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] SET [OnOff]='"+status+"' ,[TIMEOnOff]=GETDATE() WHERE [IP]='"+IP+"' ;");
 	 //if(a==0)
 	 //a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] ([IPCStatus]) VALUES ('"+IP+"');");
 	 
