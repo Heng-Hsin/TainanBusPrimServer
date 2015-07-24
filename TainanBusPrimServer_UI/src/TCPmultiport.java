@@ -450,7 +450,7 @@ public static void LastContact2(){
     	          
     	          if( Protocol.checkCKS(recv) && Protocol.NotACKNAK(recv))    
     	          {
-    	        	  
+    	        	  //System.out.println("Raw Message "+bytesToHex(recv));
     	        	  recv=Protocol.pureMessage(recv);
     	        	     	        	  
     	        	 //String deviceReport= Protocol.zerof04(recv);
@@ -474,7 +474,7 @@ public static void LastContact2(){
     	        	  try{
     	        		  
     	        		  if((recv[0]==(byte)0x5F) && (recv[1]==(byte)0xA0)){
-        	        		  //System.out.println("Got 5FA0"+bytesToHex(recv)+ "From " +packet.getAddress().toString());
+        	        		  System.out.println("Got 5FA0 "+bytesToHex(recv)+ "From " +packet.getAddress().toString());
         	        		  if((recv[2]==(byte)0x01) && (recv[3]==(byte)0x01) ){
         	        		  MSDB.updateIPCStatus(from,9);
         	        		  MSDB.updateIPCOnOff(from,4);
@@ -489,6 +489,7 @@ public static void LastContact2(){
         	        	  }else if((recv[0]==(byte)0x0F) && (recv[1]==(byte)0x04)){
         	        		  
         	        		  MSDB.update0F04Status(from,bytesToHex(recv));
+        	        		  
         	        		  //System.out.println("0F04 "+bytesToHex(recv)+" from "+from);
         	        	  }
     	        		  
@@ -596,7 +597,7 @@ public static void LastContact2(){
     	        	    	 
     	                   		byte[] cmd= MessageCreator.createpackage(seq,"8888", "0F805F87");  
     	                   		UDPSender.Send(userInterfaceIP,userInterfacePort,cmd);   	                   		
-    	                   		//System.out.println("Sent by UDP "+bytesToHex(cmd)+" "+userInterfaceIP+":"+userInterfacePort);
+    	                   		System.out.println("Sent by UDP "+bytesToHex(cmd)+" "+userInterfaceIP+":"+userInterfacePort);
     	                   		System.out.println("Message Type = "+messagetype);    	                   		
     	        	    	 	}catch(Exception e){
     	        	    	 		
@@ -817,112 +818,46 @@ public static void LastContact2(){
             	  		break;    
             	  			            	  		
             	  		
-            	  		case 6:   //BusPrime Universal Off Switch   
+            	  		case 5:   //BusPrime Universal Off Switch   
             	  			
-            	  			System.out.println("Universal BusPrime Off Switch");	
+            	  			System.out.println("Universal BusPrime Switch");	
             	  			try{
 
-            	  				 IP="172.23.25.";
-            	  				
+            	  				System.out.println("OK!!!!!!!!");
+            	  				String[] allMasterAddr=MSDB.getAllMasters_Addr();
+    							
+    							for(String m: allMasterAddr){
+    								System.out.println("Group "+m);
+    								
+    								 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(m);
+    								 String MasterIP=MSDB.getCrossRoad_IP(m);
+    								 for(String c:CrossRoadAddr){
+    									 
+    									 
+    									 /*
+    									 System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+    									byte[] cmd2=MessageCreator.createpackage("01",c, "5F9001");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+    									String message3=Protocol.bytesToHex(cmd2);
+    								 		System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+    										UDPSender.Send(MasterIP,"20000",message);		
+    										*/							
+    								 }
+    																
+    							}
 
-            	  				if(msgrcver.matches("AAAA")){  
-            	  					System.out.println("Turn Off BusPrim Brown Line");
-        	        				        	        				
-        	        				for(int i=1;i<31;i++){
-        	        					String endvalue = Integer.toString(i);
-        	        					//PingIP.OtherThread(IP+endvalue);
-        	        					UDPSender.Send(IP+endvalue,"20000","AABB01FFFF000D5F8000AACCA4");
-        	        				}
-            	  					
-            	  				}else if(msgrcver.matches("BBBB")){
-            	  					System.out.println("Turn Off BusPrim Green Line");
-            	  					
-            	  					for(int i=31;i<61;i++){
-        	        					String endvalue = Integer.toString(i);
-        	        					//PingIP.OtherThread(IP+endvalue);
-        	        					UDPSender.Send(IP+endvalue,"20000","AABB01FFFF000D5F8000AACCA4");
-        	        				}
-            	  					
-            	  					
-            	  				}else if(msgrcver.matches("FFFF")){
-            	  					System.out.println("Turn Off BusPrim EveryLine");
-            	  					for(int i=1;i<61;i++){
-        	        					String endvalue = Integer.toString(i);
-        	        					//PingIP.OtherThread(IP+endvalue);
-        	        					UDPSender.Send(IP+endvalue,"20000","AABB01FFFF000D5F8000AACCA4");
-        	        				}
-            	  					
-            	  				}else{
-            	  					System.out.println("msgrcver "+msgrcver);
-            	  					roadipport=MSDB.getRoadIPport(msgrcver);
-               	  				 	
-            	  					UDPSender.Send(roadipport[0],"20000","AABB01FFFF000D5F8000AACCA4");
-               	  				 	
-            	  				}
+            	  				
             	  				
                	  			
             	  				
             	  			}catch(Exception e){
             	  				e.printStackTrace();
-            	  				System.out.println("Error in Universal BusPrime Off Switch");
+            	  				System.out.println("Error in Universal BusPrime Switch");
             	  				
             	  			}
    	  			
             	  		break;
             	  		
-            	  		case 5:   //BusPrime Universal On Switch   
-            	  			
-            	  			System.out.println("Universal BusPrime On Switch");	
-            	  			try{
-            	  				
-
-            	  				 IP="172.23.25.";
-
-            	  				if(msgrcver.matches("AAAA")){  
-            	  					System.out.println("Turn On BusPrim Brown Line");
-        	        				        	        				
-        	        				for(int i=1;i<31;i++){
-        	        					String endvalue = Integer.toString(i);
-        	        					//PingIP.OtherThread(IP+endvalue);
-        	        					UDPSender.Send(IP+endvalue,"20000","AABB01FFFF000D5F8001AACCA5");
-        	        				}
-            	  					
-            	  				}else if(msgrcver.matches("BBBB")){
-            	  					System.out.println("Turn On BusPrim Green Line");
-            	  					
-            	  					for(int i=31;i<61;i++){
-        	        					String endvalue = Integer.toString(i);
-        	        					//PingIP.OtherThread(IP+endvalue);
-        	        					UDPSender.Send(IP+endvalue,"20000","AABB01FFFF000D5F8001AACCA5");
-        	        				}
-            	  					
-            	  					
-            	  				}else if(msgrcver.matches("FFFF")){
-            	  					System.out.println("Turn On BusPrim EveryLine");
-            	  					for(int i=1;i<61;i++){
-        	        					String endvalue = Integer.toString(i);
-        	        					//PingIP.OtherThread(IP+endvalue);
-        	        					UDPSender.Send(IP+endvalue,"20000","AABB01FFFF000D5F8001AACCA5");
-        	        				}
-            	  					
-            	  				}else{
-            	  					
-            	  					roadipport=MSDB.getRoadIPport(msgrcver);
-               	  				 	
-            	  					UDPSender.Send(roadipport[0],"20000","AABB01FFFF000D5F8001AACCA5");
-               	  				 	
-            	  				}
-            	  				
-               	  			
-            	  				
-            	  			}catch(Exception e){
-            	  				e.printStackTrace();
-            	  				System.out.println("Error in Universal BusPrime On Switch");
-            	  				
-            	  			}
-            	  			
-
-            	  		break;
+            	  
             	  		
             	  		case 7:   //BusPrime Personal Off Switch   
             	  			

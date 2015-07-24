@@ -198,9 +198,37 @@ public static String[] getAllMasters_IP(){
       return x;
 }
 
+public static String[] getAllMasters_Addr(){
+	
+	Vector a =dbGetString("SELECT [CrossRoadID] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] where [isMaster]='1'");
+	
+	String[] x= new String[a.size()];
+     
+      for(int i=0;i<a.size();i++){
+    	x[i]= (String) a.get(i);
+    	    	    	
+    	  //System.out.println(x[i]);
+      }
+      return x;
+}
+
 public static String[] getAll3G_IP(){
 	
 	Vector a =dbGetString("SELECT [CrossRoadIP] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] where [roadY] ='Y'  ");
+	
+	String[] x= new String[a.size()];
+     
+      for(int i=0;i<a.size();i++){
+    	x[i]= (String) a.get(i);
+    	    	    	
+    	  //System.out.println(x[i]);
+      }
+      return x;
+}
+
+public static String[] getCrossRoadAddr_Group(String GroupID){
+	
+	Vector a =dbGetString("SELECT [CrossRoadID] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] WHERE [GroupID] ='"+GroupID+"'  ");
 	
 	String[] x= new String[a.size()];
      
@@ -852,7 +880,7 @@ public static boolean check0F04status(String IP){
 public static int update0F04Status(String IP,String status){
 	int a=0;
 	
-		 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] SET [Abnormalinfor]='"+status+"' ,[TIMEAbnormalinfor]=GETDATE() WHERE [IP]='"+IP+"' ;");
+		 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] SET [Abnormalinfor]='"+status+"' ,[TIMEAbnormalinfor]=GETDATE() WHERE [CrossRoadIP]='"+IP+"' ;");
 			
 	 //if(a==0)
 	 //a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] ([IPCStatus]) VALUES ('"+IP+"');");
@@ -1168,6 +1196,25 @@ public static String getCrossRoad_IPport(String CrossRoad){
 	}
 	}
 
+public static String getCrossRoad_IP(String CrossRoadID){
+	String IP="";
+	try{
+	
+	Vector a =dbGetString("SELECT [CrossRoadIP] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] "
+			+ "where [CrossRoadID] ='"+CrossRoadID+"'");
+	
+	//SELECT [CrossRoadIP] FROM [TainanBusPrim].[dbo].[BusPrority_CrossRoad_Info_Tab] WHERE [CrossRoadID] ='0043'
+	
+	IP= a.toString().replace("[", "").replace("]", "").replace(" ", "");    
+	IP=IP.toUpperCase();
+	return IP;
+	}catch(Exception e){
+		System.out.println("Error in getCrossRoad_IP");
+		return null;
+	}
+}
+
+
 public static String getTrigger_CrossRoadID(String TriggerID){
 	String addr="";
 	try{
@@ -1213,6 +1260,23 @@ public static String getTrigger_BusLineOrder(String TriggerID){
 	return addr;
 	}catch(Exception e){
 		System.out.println("Error in getTrigger_BusLineOrder");
+		return null;
+	}
+}
+
+public static String getCrossRoad_IPCStatus(String CrossRoadID){
+	String addr="";
+	try{
+	int temp=0;
+	Vector a =dbGetString("SELECT [IPCStatus]  FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] "
+			+ "where [CrossRoadID] ='"+CrossRoadID+"'");
+	//SELECT [IPCStatus] FROM [TainanBusPrim].[dbo].[BusPrority_CrossRoad_Info_Tab] WHERE [CrossRoadID] ='0043'
+	
+     addr= a.toString().replace("[", "").replace("]", "").replace(" ", "");    
+     addr=addr.toUpperCase();
+	return addr;
+	}catch(Exception e){
+		System.out.println("Error in getCrossRoad_IPCStatus");
 		return null;
 	}
 }

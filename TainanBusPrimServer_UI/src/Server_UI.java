@@ -726,13 +726,9 @@ public class Server_UI extends JFrame {
 		btnNewButton_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//MSDB.check0F04status("172.23.25.27");
-				String testIP="192.168.234.152";
 				
 				
-				if(PingIP.fullconnection.contains(testIP)){
-					System.out.println("Is in Full Connection list");
-					MSDB.updateIPCOnOff(testIP,5);
-				}
+	     
 							
 			}
 		});
@@ -920,7 +916,7 @@ public class Server_UI extends JFrame {
 	            public void run() {
 	            	
 	            	try{
-	            		String IP="172.23.25.";
+	            		
 						
 						for(String a:ThreeGIP){
 							if(MSDB.check0F04status(a)){
@@ -930,15 +926,25 @@ public class Server_UI extends JFrame {
 						
 						}
 						
-						
-						
-						for(String t:MasterIP){
 							
-							//byte[] cmd2=createpackage("01","2062", "5F190000000000");  //1.Seq 2.Addr 3.封包內容
-					 		//System.out.println("4.0 Packet  " + bytesToHex(cmd2));
-							UDPSender.Send(t,"20000","AABB01FFFF000C5F90AACCB5");
-							//System.out.println("Send "+IP+endvalue+" "+"AABB01FFFF000C5F90AACCB5");
-						}
+							String[] allMasterAddr=MSDB.getAllMasters_Addr();
+							
+							for(String m: allMasterAddr){
+								//System.out.println("Group "+m);
+								
+								 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(m);
+								 String MasterIP=MSDB.getCrossRoad_IP(m);
+								 for(String c:CrossRoadAddr){
+									 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+									byte[] cmd2=MessageCreator.createpackage("01",c, "5F9001");  //1.Seq 2.Addr 3.封包內容
+									String message=Protocol.bytesToHex(cmd2);
+								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+										UDPSender.Send(MasterIP,"20000",message);									
+								 }
+																
+							}
+
+	
 						
 						//new ReminderBeep2(30);
 	            	}catch(Exception e){
