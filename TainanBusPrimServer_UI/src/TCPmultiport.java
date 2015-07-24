@@ -268,7 +268,7 @@ public static void LastContact2(){
 		 
 			try {
 				 					 
-				input = new FileInputStream("C://BusPrime.properties");
+				input = new FileInputStream("C://TainanBusPrime.properties");
 							
 				prop.load(input);
 			

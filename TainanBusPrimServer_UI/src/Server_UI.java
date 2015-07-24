@@ -55,8 +55,8 @@ public class Server_UI extends JFrame {
 	public static JLabel lblNewLabel_5 ;
 	
 	public static String[] IPCIP;
-	public static String[] ThreeGIP;
-	public static String[] MasterIP;
+	public static String[] ThreeGIP;  // All TC IP 
+	public static String[] MasterIP;  // All IPC IP
 	
 
 	private static String DBDriver;
@@ -722,14 +722,21 @@ public class Server_UI extends JFrame {
 		btnNewButton_11.setBounds(862, 64, 112, 23);
 		contentPane.add(btnNewButton_11);
 		
-		JButton btnNewButton_14 = new JButton("Check Test");
+		JButton btnNewButton_14 = new JButton(" Test ");
 		btnNewButton_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MSDB.check0F04status("172.23.25.27");
+				//MSDB.check0F04status("172.23.25.27");
+				String testIP="192.168.234.152";
 				
+				
+				if(PingIP.fullconnection.contains(testIP)){
+					System.out.println("Is in Full Connection list");
+					MSDB.updateIPCOnOff(testIP,5);
+				}
+							
 			}
 		});
-		btnNewButton_14.setBounds(984, 64, 87, 23);
+		btnNewButton_14.setBounds(318, 35, 87, 23);
 		contentPane.add(btnNewButton_14);
 		
 		
@@ -755,7 +762,7 @@ public class Server_UI extends JFrame {
 				lblNewLabel_5.setText(DB_connect_string);
 				MSDB mssql =new MSDB();
 				
-				//TCPmultiport  multiport =new TCPmultiport();				
+				TCPmultiport  multiport =new TCPmultiport();				
 				
 				//IPCIP =  MSDB.getIPCIP();
 				ThreeGIP = MSDB.getAll3G_IP();
@@ -878,7 +885,7 @@ public class Server_UI extends JFrame {
 	        				
 	                    	Thread.sleep(1000*60*1);
 	                    	System.out.println("IPC Connection Check");
-	                    	//btnNewButton_10.doClick();
+	                    	btnNewButton_10.doClick();
 	                    	//TCPmultiport.LastContact2();
 	                    	
 	                    	for(String t:ThreeGIP){	                    		
@@ -915,7 +922,7 @@ public class Server_UI extends JFrame {
 	            	try{
 	            		String IP="172.23.25.";
 						
-						for(String a:IPCIP){
+						for(String a:ThreeGIP){
 							if(MSDB.check0F04status(a)){
 								MSDB.updateIPCStatus(a,7);
 							}
@@ -923,9 +930,13 @@ public class Server_UI extends JFrame {
 						
 						}
 						
-						for(int i=1;i<61;i++){
-							String endvalue = Integer.toString(i);					
-							UDPSender.Send(IP+endvalue,"20000","AABB01FFFF000C5F90AACCB5");
+						
+						
+						for(String t:MasterIP){
+							
+							//byte[] cmd2=createpackage("01","2062", "5F190000000000");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+					 		//System.out.println("4.0 Packet  " + bytesToHex(cmd2));
+							UDPSender.Send(t,"20000","AABB01FFFF000C5F90AACCB5");
 							//System.out.println("Send "+IP+endvalue+" "+"AABB01FFFF000C5F90AACCB5");
 						}
 						
