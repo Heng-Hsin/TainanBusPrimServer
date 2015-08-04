@@ -888,6 +888,17 @@ public static int update0F04Status(String IP,String status){
 	 return a;
 }
 
+public static int update0F04Status_fromAddr(String CrossRoadID,String status){
+	int a=0;
+	
+		 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] SET [Abnormalinfor]='"+status+"' ,[TIMEAbnormalinfor]=GETDATE() WHERE [CrossRoadID]='"+CrossRoadID+"' ;");
+			
+	 //if(a==0)
+	 //a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] ([IPCStatus]) VALUES ('"+IP+"');");
+	 
+	 return a;
+}
+
 public static int updateIPCStatus(String IP,int status){
 	int a=0;
 	
@@ -903,12 +914,36 @@ public static int updateIPCStatus(String IP,int status){
 	 return a;
 }
 
+public static int updateIPCStatus_fromAddr(String CrossroadID,int status){
+	int a=0;
+	
+		if(status==7){
+			 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] SET [IPCStatus]='"+status+"'  WHERE [CrossRoadID]='"+CrossroadID+"' ;");
+		}else{
+			 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] SET [IPCStatus]='"+status+"' ,[TIMEIPCStatus]=GETDATE() WHERE [CrossRoadID]='"+CrossroadID+"' ;");
+		}
+	
+	 //if(a==0)
+	 //a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] ([IPCStatus]) VALUES ('"+IP+"');");
+	 
+	 return a;
+}
 
 public static int updateIPCOnOff(String IP,int status){
 	int a=0;
 	
 		
 	 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] SET [OnOff]='"+status+"' ,[TIMEOnOff]=GETDATE() WHERE [CrossRoadIP]='"+IP+"' ;");
+	 //if(a==0)
+	 //a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] ([IPCStatus]) VALUES ('"+IP+"');");
+	 
+	 return a;
+}
+
+public static int updateIPCOnOff_fromAddr(String CrossRoadID,int status){
+	int a=0;
+		
+	 a =dbUpdate("UPDATE ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] SET [OnOff]='"+status+"' ,[TIMEOnOff]=GETDATE() WHERE [CrossRoadID]='"+CrossRoadID+"' ;");
 	 //if(a==0)
 	 //a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[GoogleMap_A_Tab] ([IPCStatus]) VALUES ('"+IP+"');");
 	 

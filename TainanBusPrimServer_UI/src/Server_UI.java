@@ -170,7 +170,7 @@ public class Server_UI extends JFrame {
 		textField.setBounds(146, 12, 210, 21);
 		panel.add(textField);
 		textField.setColumns(10);
-		textField.setText("172.23.25.1");
+		textField.setText("192.168.234.152");
 		JLabel lblNewLabel_6 = new JLabel("DB IP Address :");
 		lblNewLabel_6.setBounds(20, 13, 98, 18);
 		panel.add(lblNewLabel_6);
@@ -189,7 +189,7 @@ public class Server_UI extends JFrame {
 		textField_2.setBounds(146, 74, 210, 21);
 		panel.add(textField_2);
 		textField_2.setColumns(10);
-		textField_2.setText("tycgtcipc");
+		textField_2.setText("ceciits");
 		
 		JLabel lblNewLabel_8 = new JLabel("DB Password :");
 		lblNewLabel_8.setBounds(20, 77, 83, 15);
@@ -236,7 +236,7 @@ public class Server_UI extends JFrame {
 					
 					//dbUpdate(String driver,String connect_string,String userid,String password,String queryString)
 					String driver="com.microsoft.jdbc.sqlserver.SQLServerDriver";
-					String connect="jdbc:microsoft:sqlserver://"+remoteDBIP+":1433;DatabaseName=TaoyuanBusPrim";
+					String connect="jdbc:microsoft:sqlserver://"+remoteDBIP+":1433;DatabaseName=TainanBusPrim";
 					int effected=MSDB.dbUpdate(driver,connect,remoteDBuser,remoteDBpw,temp);
 					
 					if(effected==-1){
@@ -254,6 +254,83 @@ public class Server_UI extends JFrame {
 		});
 		btnNewButton_4.setBounds(644, 389, 121, 23);
 		panel.add(btnNewButton_4);
+		
+		JButton btnNewButton_9 = new JButton(" Sql Multi-Execute ");
+		btnNewButton_9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				 Thread thread = new Thread(new Runnable() {
+			            @Override
+			            public void run() {
+			            	
+			            	try{
+			            		String Error="";
+			            		String temp =textArea_2.getText();
+			    				if( temp.isEmpty()){					
+			    					JFrame frame= new JFrame();
+			                        JOptionPane.showMessageDialog(frame,"SQL query is empty");
+			    				}else{
+			    					
+			    					for(String t:MasterIP){
+			    						
+			    						try{
+			    							int tried=0;
+				    						while(tried<3){
+				    							try{
+				    								String remoteDBIP=t;
+							    					String remoteDBuser=textField_1.getText();
+							    					String remoteDBpw=textField_2.getText();
+							    					
+							    					String driver="com.microsoft.jdbc.sqlserver.SQLServerDriver";
+							    					String connect="jdbc:microsoft:sqlserver://"+remoteDBIP+":1433;DatabaseName=TainanBusPrim";
+							    					int effected=MSDB.dbUpdate(driver,connect,remoteDBuser,remoteDBpw,temp);
+							    					
+							    					if(effected==-1){
+							    						//failed
+							    						tried++;
+							    						Thread.sleep(1000);
+							    					}else{
+							    						//Success
+							    						tried=3;
+							    					}
+				    								
+				    								
+				    							}catch(Exception g){
+				    								System.out.println("Sql Multi-Execute InnerWhile Error");
+				    							}
+
+				    							
+				    						}
+			    							
+			    							
+			    						}catch(Exception v){
+			    							System.out.println("Sql Multi-Execute InnerFor Error");
+			    						}
+			    						
+
+			    					}
+			    					
+
+			    				}
+			            		
+			            		
+			            	}catch(Exception e){
+			            		
+			            		System.out.println(" Error-> Sql Multi-Execute ");
+			            	}
+			            	
+			            	
+			              
+			            }
+			        });
+			        thread.start();
+				
+			}
+		});
+		btnNewButton_9.setBounds(614, 422, 178, 34);
+		panel.add(btnNewButton_9);
+		
+		
 		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Upload", null, panel_1, null);
@@ -766,7 +843,7 @@ public class Server_UI extends JFrame {
 				
 				DBconnection();
 				IPCconnection();
-				//CrossRoadCollector();
+				CrossRoadCollector();
 				
 				
 				if(mssql.dbConnection()){

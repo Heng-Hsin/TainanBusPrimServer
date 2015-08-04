@@ -48,7 +48,7 @@ public class DB_ThreadPool extends Thread {
 		 
 			try {
 				 					 
-				input = new FileInputStream("C://BusPrime.properties");
+				input = new FileInputStream("C://TainanBusPrime.properties");
 							
 				prop.load(input);			
 				
@@ -89,7 +89,7 @@ public class DB_ThreadPool extends Thread {
 		try{
 			 Executor executor = Executors.newFixedThreadPool(6);  //number of threads ****
 			 Properties();
-			 String[] Work=Server_UI.IPCIP;
+			 String[] Work=Server_UI.MasterIP;
 			 
 			 for(String a:Work){
 				 executor.execute(new Work(a));
@@ -127,29 +127,32 @@ public class DB_ThreadPool extends Thread {
         	
         	//WHERE Date between dateadd(hour, -1, getdate()) and getdate();
         	try{
-
+        		//TainanBusPrim
 				 String CrossRoadIP= id;
 				 String temp_driver="com.microsoft.jdbc.sqlserver.SQLServerDriver";
-				 String temp_connect="jdbc:microsoft:sqlserver://"+CrossRoadIP+":1433;DatabaseName=TaoyuanBusPrim";
+				 String temp_connect="jdbc:microsoft:sqlserver://"+CrossRoadIP+":1433;DatabaseName=TainanBusPrim";
 				 String temp_userid=CrossRoadDB_userid.trim();
 	        	 String temp_password=CrossRoadDB_password.trim();
 	        	 //String temp_query=textArea_1.getText();
 	        	 
 	        	 String localIP= localDBIP;
 	        	 String local_driver="com.microsoft.jdbc.sqlserver.SQLServerDriver";
-				 String local_connect="jdbc:microsoft:sqlserver://"+localIP+":1433;DatabaseName=TaoyuanBusPrim";
+				 String local_connect="jdbc:microsoft:sqlserver://"+localIP+":1433;DatabaseName=TainanBusPrim";
 				 String local_userid=DB_userid.trim();
 	        	 String local_password=DB_password.trim();
 	        	 //String local_table = textField_12.getText().trim();
-	        	 String[] Query=new String[3];
-	        	 String[] localtable=new String[3];
+	        	 String[] Query=new String[4];
+	        	 String[] localtable=new String[4];
 	        	 
-	        	 Query[0]="SELECT * FROM [TaoyuanBusPrim].[dbo].[BusA1_Log] WHERE [Time] between dateadd(hour, -1, getdate()) and getdate();";
+	        	 Query[0]="SELECT * FROM [TainanBusPrim].[dbo].[BusA1_Log] WHERE [Time] between dateadd(hour, -1, getdate()) and getdate();";
 				 localtable[0]="BusA1_Log";
-				 Query[1]="SELECT * FROM [TaoyuanBusPrim].[dbo].[BusStrategy_Log] WHERE [P3] between dateadd(hour, -1, getdate()) and getdate();";
+				 Query[1]="SELECT * FROM [TainanBusPrim].[dbo].[BusStrategy_Log] WHERE [Time] between dateadd(hour, -1, getdate()) and getdate();";
 				 localtable[1]="BusStrategy_Log";
-				 Query[2]="SELECT * FROM [TaoyuanBusPrim].[dbo].[SubPhaseLog] WHERE [TimeStarted] between dateadd(hour, -1, getdate()) and getdate();";
+				 Query[2]="SELECT * FROM [TainanBusPrim].[dbo].[SubPhaseLog] WHERE [TimeStarted] between dateadd(hour, -1, getdate()) and getdate();";
 				 localtable[2]="SubPhaseLog";
+				 Query[3]="SELECT * FROM [TainanBusPrim].[dbo].[BusTrigger_Log] WHERE [Time] between dateadd(hour, -1, getdate()) and getdate();";
+				 localtable[3]="BusTrigger_Log";
+				 
 	        	 
 				boolean remoteconnection=MSDB.dbConnection(temp_driver,temp_connect,temp_userid,temp_password);
 				//boolean localconnection=MSDB.dbConnection(temp_driver,temp_connect,temp_userid,temp_password);
@@ -160,13 +163,15 @@ public class DB_ThreadPool extends Thread {
                    
 				}else{
 					
-					for(int i=0;i<3;i++){
+					for(int i=0;i<4;i++){
 																		
 						int attempt=0;
 						while(attempt<3){
 						try {
 							ResultSet remotedata = MSDB.GetRemoteDBResultSet(temp_driver,temp_connect,temp_userid,temp_password,Query[i]);
+							
 							MSDB.InsertRs(remotedata,local_driver,local_connect,local_userid,local_password,localtable[i]);
+							//System.out.println(" temp_driver "+temp_driver+" temp_connect "+temp_connect+" temp_userid "+temp_userid+" temp_password "+temp_password+" Query[i] "+Query[i]);
 							attempt=3;
 							System.out.println(id+" "+localtable[i]+" download complete");
 						} catch (Exception e) {							

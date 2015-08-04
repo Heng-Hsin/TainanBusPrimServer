@@ -440,6 +440,7 @@ public static void LastContact2(){
     	          dsocket.receive(packet);
     	          
     	          byte[] newbuffer= new byte[packet.getLength()];
+    	          String Addr="";
     	          
     	          for(int i =0;i<packet.getLength();i++)
     	          	newbuffer[i]=buffer[i];
@@ -450,6 +451,8 @@ public static void LastContact2(){
     	          
     	          if( Protocol.checkCKS(recv) && Protocol.NotACKNAK(recv))    
     	          {
+    	        	  Addr=Protocol.GetAddr(recv);
+    	        	  
     	        	  //System.out.println("Raw Message "+bytesToHex(recv));
     	        	  recv=Protocol.pureMessage(recv);
     	        	     	        	  
@@ -476,20 +479,25 @@ public static void LastContact2(){
     	        		  if((recv[0]==(byte)0x5F) && (recv[1]==(byte)0xA0)){
         	        		  System.out.println("Got 5FA0 "+bytesToHex(recv)+ "From " +packet.getAddress().toString());
         	        		  if((recv[2]==(byte)0x01) && (recv[3]==(byte)0x01) ){
-        	        		  MSDB.updateIPCStatus(from,9);
-        	        		  MSDB.updateIPCOnOff(from,4);
-        	        		  System.out.println("BusPrime On "+from);
+        	        		  //MSDB.updateIPCStatus(from,9);
+        	        		  MSDB.updateIPCStatus_fromAddr(Addr,9);
+        	        		  //MSDB.updateIPCOnOff(from,4);
+        	        		  MSDB.updateIPCOnOff_fromAddr(Addr,4);
+        	        		  System.out.println("BusPrime On "+from+" Addr "+Addr);
+        	        		  
         	        		  }
         	        		  if((recv[2]==(byte)0x01) && (recv[3]==(byte)0x00) ){
-            	        		  MSDB.updateIPCStatus(from,8);
-            	        		  MSDB.updateIPCOnOff(from,4);
+            	        		  //MSDB.updateIPCStatus(from,8);
+            	        		  MSDB.updateIPCStatus_fromAddr(Addr,8);
+            	        		  //MSDB.updateIPCOnOff(from,4);
+            	        		  MSDB.updateIPCOnOff_fromAddr(Addr,4);
             	        		  System.out.println("BusPrime Off "+from);
             	        		  }
         	        		  
         	        	  }else if((recv[0]==(byte)0x0F) && (recv[1]==(byte)0x04)){
         	        		  
-        	        		  MSDB.update0F04Status(from,bytesToHex(recv));
-        	        		  
+        	        		  //MSDB.update0F04Status(from,bytesToHex(recv));
+        	        		  MSDB.update0F04Status_fromAddr(Addr,bytesToHex(recv));
         	        		  //System.out.println("0F04 "+bytesToHex(recv)+" from "+from);
         	        	  }
     	        		  
