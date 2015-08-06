@@ -826,9 +826,9 @@ public static void LastContact2(){
             	  		break;    
             	  			            	  		
             	  		
-            	  		case 5:   //BusPrime Universal Off Switch   
+            	  		case 5:   //BusPrime Universal ON Switch   
             	  			
-            	  			System.out.println("Universal BusPrime Switch");	
+            	  			System.out.println("Universal BusPrime Switch On");	
             	  			try{
 
             	  				System.out.println("OK!!!!!!!!");
@@ -859,7 +859,46 @@ public static void LastContact2(){
             	  				
             	  			}catch(Exception e){
             	  				e.printStackTrace();
-            	  				System.out.println("Error in Universal BusPrime Switch");
+            	  				System.out.println("Error in case 5");
+            	  				
+            	  			}
+   	  			
+            	  		break;
+            	  		
+            	  		case 6:   //BusPrime Universal OFF Switch   
+            	  			
+            	  			System.out.println("Universal BusPrime Switch OFF");	
+            	  			try{
+
+            	  				System.out.println("OK!!!!!!!!");
+            	  				String[] allMasterAddr=MSDB.getAllMasters_Addr();
+    							
+    							for(String m: allMasterAddr){
+    								System.out.println("Group "+m);
+    								
+    								 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(m);
+    								 String MasterIP=MSDB.getCrossRoad_IP(m);
+    								 for(String c:CrossRoadAddr){
+    									 
+    									 
+    									 /*
+    									 System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+    									byte[] cmd2=MessageCreator.createpackage("01",c, "5F9001");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+    									String message3=Protocol.bytesToHex(cmd2);
+    								 		System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+    										UDPSender.Send(MasterIP,"20000",message);		
+    										*/							
+    								 }
+    																
+    							}
+
+            	  				
+            	  				
+               	  			
+            	  				
+            	  			}catch(Exception e){
+            	  				e.printStackTrace();
+            	  				System.out.println("Error in case 6");
             	  				
             	  			}
    	  			
@@ -867,11 +906,21 @@ public static void LastContact2(){
             	  		
             	  
             	  		
-            	  		case 7:   //BusPrime Personal Off Switch   
+            	  		case 7:   //BusPrime Scan CrossRoad Switches
             	  			
-            	  			System.out.println("Personal BusPrime Off Switch");	
+            	  			System.out.println("Scan the BusPrime Switches");	
             	  			try{
-		
+            	  						String[] All_Addr=MSDB.getallRoadid();
+            	  						
+            	  						for(String g:All_Addr){
+            	  							System.out.println(" CrossRoadID "+g);
+            	  							
+            	  							//Scan Each CrossRoad Switch
+            	  							
+            	  							
+            	  						}
+            	  						
+            	  				/*
             	  					 roadipport = MSDB.getRoadIPport(msgrcver);
                   	  				 addr = MSDB.getRoadAddr(msgrcver);
                   	  				System.out.println("RoadID "+msgrcver);
@@ -885,11 +934,12 @@ public static void LastContact2(){
       	                   	
       	                   		//UDPSender.Send(tempdeviceIP,tempdeviceport,dcmd); 
       	                   		UDPSender.Send(roadipport[0],tempportint,dcmd); 
+      	                   		*/
  			
             	  				
             	  			}catch(Exception e){
             	  				e.printStackTrace();
-            	  				System.out.println("Error in Personal BusPrime Off Switch");
+            	  				System.out.println("Error in case 7");
             	  				
             	  			}
             	  			

@@ -143,6 +143,8 @@ public class DB_ThreadPool extends Thread {
 	        	 //String local_table = textField_12.getText().trim();
 	        	 String[] Query=new String[4];
 	        	 String[] localtable=new String[4];
+	        	 //String[] StartTime=new String[4];
+	        	 String StartingTime="";
 	        	 
 	        	 Query[0]="SELECT * FROM [TainanBusPrim].[dbo].[BusA1_Log] WHERE [Time] between dateadd(hour, -1, getdate()) and getdate();";
 				 localtable[0]="BusA1_Log";
@@ -153,7 +155,32 @@ public class DB_ThreadPool extends Thread {
 				 Query[3]="SELECT * FROM [TainanBusPrim].[dbo].[BusTrigger_Log] WHERE [Time] between dateadd(hour, -1, getdate()) and getdate();";
 				 localtable[3]="BusTrigger_Log";
 				 
-	        	 
+				 try{
+					 
+					 for(int o=0;o<4;o++){
+						 
+						 try{
+							 StartingTime =MSDB.getGrabber_time(id , localtable[o]);
+							 StartingTime="'"+StartingTime+"'";
+							 
+							 System.out.println("Grabbing Time for "+id+" Table "+localtable[o]);								 
+							 Query[o]= Query[o].replace("dateadd(hour, -1, getdate())", StartingTime);							 
+							 System.out.println("New Query "+Query[o]);
+						 							 
+						 }catch(Exception qw){
+							 System.out.println("Error in Generating new Query "+qw.getMessage());
+						 }
+						 
+						
+					 }
+					 
+					 
+				 }catch(Exception tn){
+					 System.out.println("Grabbing Time Error "+id);
+				 }
+				
+				 
+				 
 				boolean remoteconnection=MSDB.dbConnection(temp_driver,temp_connect,temp_userid,temp_password);
 				//boolean localconnection=MSDB.dbConnection(temp_driver,temp_connect,temp_userid,temp_password);
 				
@@ -174,6 +201,9 @@ public class DB_ThreadPool extends Thread {
 							//System.out.println(" temp_driver "+temp_driver+" temp_connect "+temp_connect+" temp_userid "+temp_userid+" temp_password "+temp_password+" Query[i] "+Query[i]);
 							attempt=3;
 							System.out.println(id+" "+localtable[i]+" download complete");
+							
+							MSDB.Update_Grabber_log(id,localtable[i]);
+							
 						} catch (Exception e) {							
 							attempt++;
 							if(attempt>2){

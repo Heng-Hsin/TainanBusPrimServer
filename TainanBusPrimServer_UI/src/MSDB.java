@@ -249,6 +249,16 @@ public static String getTrigPtype(String xroadid , String direct, int order){
       		
 	return ptype;
 }
+
+public static String getGrabber_time(String CrossRoad_IP , String Table_name){
+	String time="";
+	
+	Vector a =dbGetString("SELECT [Time] FROM ["+DB_database_name+"].[dbo].[DB_Grabber_log] "
+			+ "where [CrossRoad_IP]='"+CrossRoad_IP+"' and [Table_Name]='"+Table_name+"'");
+	time= a.toString().replace("[", "").replace("]", "");
+      		
+	return time;
+}
 	
 public static String[] getTrigID(String xroadid , String direct){
 		
@@ -406,7 +416,7 @@ public static String[] getTrigID(String xroadid , String direct){
 	
 	public static String[] getallRoadid(){
 		
-		Vector a =dbGetString("SELECT [CrossRoadID] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab]"
+		Vector a =dbGetString("SELECT [CrossRoadID] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] where [roadY]='Y'"
 				+ "order by [CrossRoadID] ");
 		
 		 String[] x= new String[a.size()];
@@ -1013,6 +1023,18 @@ public static int setCompareClock(String time,int comparetype){
 	try{
 	 a =dbUpdate(" DELETE  FROM  [taipei_db].[dbo].[COMPARECLOCK] ");  
          a =a+dbUpdate("INSERT into [taipei_db].[dbo].[COMPARECLOCK] ([STARTTIME],[COMPARETYPE]) VALUES ('"+time+"','"+comparetype+"');");
+	}catch (Exception e) {  
+		return a;  
+				}  
+   return a;
+   
+}
+
+public static int Update_Grabber_log(String CrossRoadIP,String TableName){
+	int a=0;
+	try{
+	 a =dbUpdate(" DELETE  FROM  ["+DB_database_name+"].[dbo].[DB_Grabber_log] Where [CrossRoad_IP]='"+CrossRoadIP+"'  and  [Table_Name]='"+TableName+"' ");  
+         a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[DB_Grabber_log] ([CrossRoad_IP],[Table_Name],[Time]) VALUES ('"+CrossRoadIP+"','"+TableName+"',GETDATE());");
 	}catch (Exception e) {  
 		return a;  
 				}  
