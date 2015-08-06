@@ -259,6 +259,20 @@ public static String getGrabber_time(String CrossRoad_IP , String Table_name){
       		
 	return time;
 }
+
+public static String[] getLatestCommand(){
+	
+	Vector a =dbGetString("SELECT TOP 1 [OnOff],[Time],[admin] FROM ["+DB_database_name+"].[dbo].[OnOff_Tab] order by [Time] desc");
+	
+	String[] x= new String[a.size()];
+     
+      for(int i=0;i<a.size();i++){
+    	x[i]= (String) a.get(i);
+    	    	    	
+    	  //System.out.println(x[i]);
+      }
+      return x;
+}
 	
 public static String[] getTrigID(String xroadid , String direct){
 		
