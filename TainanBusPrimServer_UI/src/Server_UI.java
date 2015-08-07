@@ -957,7 +957,9 @@ public class Server_UI extends JFrame {
 	        				
 	        				
 	                    	Thread.sleep(1000*60*1);
+	                    	
 	                    	System.out.println("IPC Connection Check");
+	                    	WebSiteCommands();
 	                    	btnNewButton_10.doClick();
 	                    	//TCPmultiport.LastContact2();
 	                    	
@@ -1131,4 +1133,169 @@ public class Server_UI extends JFrame {
 			}
 	   		  		   
  }
+	private void WebSiteCommands() {
+		  Thread thread = new Thread(new Runnable() {
+	            @Override
+	            public void run() {
+	            		            		
+	            		try{
+	            			//[OnOff],[Time],[admin]
+	            			String[] usercommands=MSDB.getLatestCommand();
+	            			if(usercommands[2].contains("00")){
+	            				// 5 AllOn 6 AllOff 7 Scan
+	            				System.out.println("New Command from User Get to it !!");
+	            				MSDB.GotTheCommand(usercommands[1]);  // Mark the command as acknowledged
+	            				
+	            				/*
+	            				if( Switchip.isEmpty()){					
+	        						JFrame frame= new JFrame();
+	        	                    JOptionPane.showMessageDialog(frame,"Which IP ?");
+	        					}else{
+	        						if (OnOff==1){
+	        						UDPSender.Send(Switchip,"20000","AABB01FFFF000D5F8000AACCA4");
+	        						JFrame frame= new JFrame();
+	        	                    JOptionPane.showMessageDialog(frame,"Sent Off Message to "+Switchip);
+	        						
+	        						}else if(OnOff==0){
+	        						UDPSender.Send(Switchip,"20000","AABB01FFFF000D5F8001AACCA5");
+	        						JFrame frame= new JFrame();
+	        	                    JOptionPane.showMessageDialog(frame,"Sent On Message to "+Switchip);
+	        						}									
+	        						
+	        					}
+	            				*/
+	            				
+	            				
+	            				if(usercommands[0].contains("5")){
+	            					System.out.println("TurnOn Everything");
+	            					//UDPSender.Send(Switchip,"20000","AABB01FFFF000D5F8001AACCA5");
+	            					
+	            					try{
+	            						String[] allMasterAddr=MSDB.getAllMasters_Addr();
+	        							
+	        							for(String m: allMasterAddr){
+	        								//System.out.println("Group "+m);
+	        								
+	        								 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(m);
+	        								 String MasterIP=MSDB.getCrossRoad_IP(m);
+	        								 for(String c:CrossRoadAddr){
+	        									 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.封包內容
+	        									String message=Protocol.bytesToHex(cmd2);
+	        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+	        										UDPSender.Send(MasterIP,"20000",message);									
+	        								 }
+	        																
+	        							}            						
+	           						
+	            					}catch(Exception yy){
+	            						System.out.println("Error in TurnOn Everything");
+	            						System.out.println(yy.getMessage());
+	            					}
+	            					
+	            					
+	            				}else if(usercommands[0].contains("6") || usercommands[0].contains("9")){
+	            					System.out.println("ShutDown Everything");
+	            					//UDPSender.Send(Switchip,"20000","AABB01FFFF000D5F8000AACCA4");
+	            					
+	            					try{
+	            						String[] allMasterAddr=MSDB.getAllMasters_Addr();
+	        							
+	        							for(String m: allMasterAddr){
+	        								//System.out.println("Group "+m);
+	        								
+	        								 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(m);
+	        								 String MasterIP=MSDB.getCrossRoad_IP(m);
+	        								 for(String c:CrossRoadAddr){
+	        									 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.封包內容
+	        									String message=Protocol.bytesToHex(cmd2);
+	        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+	        										UDPSender.Send(MasterIP,"20000",message);									
+	        								 }
+	        																
+	        							}            						
+	           						
+	            					}catch(Exception yy){
+	            						System.out.println("Error in ShutDown Everything");
+	            						System.out.println(yy.getMessage());
+	            					}
+	            					
+	            					
+	            					
+	            				}else if(usercommands[0].contains("7")){
+	            					System.out.println("Scan The Switches Everything");
+	            					
+	            					try{
+	            						String[] allMasterAddr=MSDB.getAllMasters_Addr();
+	        							
+	        							for(String m: allMasterAddr){
+	        								//System.out.println("Group "+m);
+	        								
+	        								String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(m);
+	        								 String MasterIP=MSDB.getCrossRoad_IP(m);
+	        								 for(String c:CrossRoadAddr){
+	        									 
+	        									 String StatusType_Addr=MSDB.getCrossRoad_IPCStatus(c);
+	        									 System.out.println("StatusType "+StatusType_Addr);
+	             								
+	             								if(StatusType_Addr.contains("9")){
+	             									System.out.println("Turn On "+c);
+	             									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.封包內容
+		        									String message=Protocol.bytesToHex(cmd2);
+		        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+		        										UDPSender.Send(MasterIP,"20000",message);		             									
+	             									
+	             								} else if(StatusType_Addr.contains("8")){
+	             									System.out.println("Turn Off "+c);
+	             									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.封包內容
+		        									String message=Protocol.bytesToHex(cmd2);
+		        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+		        										UDPSender.Send(MasterIP,"20000",message);	             									
+	             								
+	             								}
+	        									 
+	        																	
+	        								 }
+	        								
+	        								 							
+	        							}     
+	        							
+	        							
+	        							
+	        							
+	           						
+	            					}catch(Exception yy){
+	            						System.out.println("Error in Scan Everything");
+	            						System.out.println(yy.getMessage());
+	            					}
+	            					
+	            					
+	            					
+	            					
+	            					
+	            					
+	            					
+	            				}
+	            				
+	            				
+	            				
+	            			}
+	                	 
+	            			
+		            	}catch(Exception e){
+		            		e.printStackTrace();
+		            		System.out.println("Error in WebSiteCommands ");
+		            		
+		            	}
+	            	
+	            }
+	        });
+	        thread.start();
+		
+		
+		
+	}
+	
+	
 }

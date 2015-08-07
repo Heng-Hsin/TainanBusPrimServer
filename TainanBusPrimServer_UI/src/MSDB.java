@@ -273,6 +273,14 @@ public static String[] getLatestCommand(){
       }
       return x;
 }
+
+public static int GotTheCommand(String Time){
+	int a=0;
+			
+	 a =dbUpdate(" UPDATE ["+DB_database_name+"].[dbo].[OnOff_Tab] SET [admin]='11' WHERE [Time]='"+Time+"';");	
+	 
+	 return a;
+}
 	
 public static String[] getTrigID(String xroadid , String direct){
 		
