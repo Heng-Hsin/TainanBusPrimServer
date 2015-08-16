@@ -959,7 +959,7 @@ public class Server_UI extends JFrame {
 	                    	Thread.sleep(1000*60*1);
 	                    	
 	                    	System.out.println("IPC Connection Check");
-	                    	WebSiteCommands();
+	                    	//WebSiteCommands();
 	                    	btnNewButton_10.doClick();
 	                    	//TCPmultiport.LastContact2();
 	                    	
@@ -1195,6 +1195,7 @@ public class Server_UI extends JFrame {
 	            					
 	            					
 	            				}else if(usercommands[0].contains("6") || usercommands[0].contains("9")){
+	            				
 	            					System.out.println("ShutDown Everything");
 	            					//UDPSender.Send(Switchip,"20000","AABB01FFFF000D5F8000AACCA4");
 	            					
