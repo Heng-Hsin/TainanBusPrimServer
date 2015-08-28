@@ -87,6 +87,10 @@ public class Server_UI extends JFrame {
 	private JTextField textField_12;
 	private JTextField textField_13;
 	private JTextField textField_14;
+	private JTextField textField_15;
+	private JTextField textField_16;
+	private JTextField textField_17;
+	private JTextField textField_18;
 	
 	
 	
@@ -598,7 +602,7 @@ public class Server_UI extends JFrame {
 		tabbedPane.addTab("Bus Prim Switch", null, panel_3, null);
 		panel_3.setLayout(null);
 		
-		JLabel lblNewLabel_22 = new JLabel("CrossRoad IP :");
+		JLabel lblNewLabel_22 = new JLabel("Group ID :");
 		lblNewLabel_22.setBounds(10, 29, 106, 26);
 		panel_3.add(lblNewLabel_22);
 		
@@ -614,36 +618,74 @@ public class Server_UI extends JFrame {
 		JButton btnNewButton_12 = new JButton("Send");
 		btnNewButton_12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				String Switchip=textField_14.getText();
-				int OnOff=comboBox.getSelectedIndex();
-				//System.out.println(" Combo Box index "+OnOff);
-				try{
-					
-					if( Switchip.isEmpty()){					
-						JFrame frame= new JFrame();
-	                    JOptionPane.showMessageDialog(frame,"Which IP ?");
-					}else{
-						if (OnOff==1){
-						UDPSender.Send(Switchip,"20000","AABB01FFFF000D5F8000AACCA4");
-						JFrame frame= new JFrame();
-	                    JOptionPane.showMessageDialog(frame,"Sent Off Message to "+Switchip);
-						
-						}else if(OnOff==0){
-						UDPSender.Send(Switchip,"20000","AABB01FFFF000D5F8001AACCA5");
-						JFrame frame= new JFrame();
-	                    JOptionPane.showMessageDialog(frame,"Sent On Message to "+Switchip);
-						}									
-						
-					}
-					
-				}catch(Exception e){
-					e.printStackTrace();
-					JFrame frame= new JFrame();
-                    JOptionPane.showMessageDialog(frame,"Failed");
-					
-				}
-				
+				Thread thread = new Thread(new Runnable() {
+		            @Override
+		            public void run() { 
+
+		            	
+		            	String Switchip=textField_14.getText();
+						int OnOff=comboBox.getSelectedIndex();
+						//System.out.println(" Combo Box index "+OnOff);
+						try{
+							
+							if( Switchip.isEmpty()){					
+								JFrame frame= new JFrame();
+			                    JOptionPane.showMessageDialog(frame,"Which Group ?");
+							}else{
+								if (OnOff==1){
+									
+									
+										//System.out.println("Group "+m);
+										
+										 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(Switchip);
+										 String MasterIP=MSDB.getCrossRoad_IP(Switchip);
+										 for(String c:CrossRoadAddr){
+											 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+											byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.封包內容
+											String message=Protocol.bytesToHex(cmd2);
+										 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+												UDPSender.Send(MasterIP,"20000",message);									
+										 }
+																		
+								
+								
+								JFrame frame= new JFrame();
+			                    JOptionPane.showMessageDialog(frame,"Sent Off Message to "+Switchip);
+								
+								}else if(OnOff==0){
+									
+									
+										//System.out.println("Group "+m);
+										
+										 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(Switchip);
+										 String MasterIP=MSDB.getCrossRoad_IP(Switchip);
+										 for(String c:CrossRoadAddr){
+											 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+											byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.封包內容
+											String message=Protocol.bytesToHex(cmd2);
+										 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+												UDPSender.Send(MasterIP,"20000",message);									
+										 }
+																		
+
+									
+								JFrame frame= new JFrame();
+			                    JOptionPane.showMessageDialog(frame,"Sent On Message to "+Switchip);
+								}									
+								
+							}
+							
+						}catch(Exception e){
+							e.printStackTrace();
+							JFrame frame= new JFrame();
+		                    JOptionPane.showMessageDialog(frame,"Failed");
+							
+						}
+
+		            	
+		            	}
+		        });
+		        thread.start();
 				
 				
 			}
@@ -654,38 +696,167 @@ public class Server_UI extends JFrame {
 		JButton btnNewButton_13 = new JButton("All CrossRoads");
 		btnNewButton_13.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int OnOff=comboBox.getSelectedIndex();
-				//System.out.println(" Combo Box index "+OnOff);
-				try{
-					String IP="172.23.25.";
-					
-						if (OnOff==1){
+				
+				Thread thread = new Thread(new Runnable() {
+		            @Override
+		            public void run() {
+		            		            		
+		            		try{	
+		            			int OnOff=comboBox.getSelectedIndex();
+		            			
+		            			if (OnOff==0){
+									
+		            				try{
+	            						String[] allMasterAddr=MSDB.getAllMasters_Addr();
+	        							
+	        							for(String m: allMasterAddr){
+	        								//System.out.println("Group "+m);
+	        								
+	        								 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(m);
+	        								 String MasterIP=MSDB.getCrossRoad_IP(m);
+	        								 for(String c:CrossRoadAddr){
+	        									 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.封包內容
+	        									String message=Protocol.bytesToHex(cmd2);
+	        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+	        										UDPSender.Send(MasterIP,"20000",message);									
+	        								 }
+	        																
+	        							}  
+	        							
+	        							JFrame frame= new JFrame();
+	        		                    JOptionPane.showMessageDialog(frame,"TurnOn Everything");
+	           						
+	            					}catch(Exception yy){
+	            						System.out.println("Error in TurnOn Everything");            						
+	            						System.out.println(yy.getMessage());
+	            						JFrame frame= new JFrame();
+	        		                    JOptionPane.showMessageDialog(frame,"Failed to TurnOn Everything");
+	            					}
 														
-							for(int i=1;i<61;i++){
-								String endvalue = Integer.toString(i);					
-								UDPSender.Send(IP+endvalue,"20000","AABB01FFFF000D5F8000AACCA4");
-								
-							}
-												
-						}else if(OnOff==0){
-							for(int i=1;i<61;i++){
-								String endvalue = Integer.toString(i);					
-								UDPSender.Send(IP+endvalue,"20000","AABB01FFFF000D5F8001AACCA5");
-								
-							}																								
-					    }
-					
-				}catch(Exception e){
-					e.printStackTrace();
-					JFrame frame= new JFrame();
-                    JOptionPane.showMessageDialog(frame,"Failed");
-					
-				}
+								}else if(OnOff==1){
+									try{
+	            						String[] allMasterAddr=MSDB.getAllMasters_Addr();
+	        							
+	        							for(String m: allMasterAddr){
+	        								//System.out.println("Group "+m);
+	        								
+	        								 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(m);
+	        								 String MasterIP=MSDB.getCrossRoad_IP(m);
+	        								 for(String c:CrossRoadAddr){
+	        									 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.封包內容
+	        									String message=Protocol.bytesToHex(cmd2);
+	        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+	        										UDPSender.Send(MasterIP,"20000",message);									
+	        								 }
+	        																
+	        							}            						
+	        							JFrame frame= new JFrame();
+	        		                    JOptionPane.showMessageDialog(frame,"ShutDown Everything");
+	        							
+	            					}catch(Exception yy){
+	            						System.out.println("Error in ShutDown Everything");
+	            						System.out.println(yy.getMessage());
+	            						JFrame frame= new JFrame();
+	        		                    JOptionPane.showMessageDialog(frame," Failed to ShutDown Everything");
+	            					}																							
+							    }
+		            			
+		            			
+			            	}catch(Exception e){
+			            		e.printStackTrace();
+			            		System.out.println("Error in All CrossRoads ");
+			            	};
+		            	
+		            }
+		        });
+		        thread.start();
+				
+				
+				
 				
 			}
 		});
 		btnNewButton_13.setBounds(379, 90, 136, 23);
 		panel_3.add(btnNewButton_13);
+		
+		JPanel panel_4 = new JPanel();
+		tabbedPane.addTab(" CSV ", null, panel_4, null);
+		panel_4.setLayout(null);
+		
+		JButton btnNewButton_16 = new JButton("Create CSV");
+		btnNewButton_16.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				Thread thread = new Thread(new Runnable() {
+		            @Override
+		            public void run() { 
+		            	try{		            									
+		    				String csvFileName =textField_15.getText();
+		    				String GoPath =textField_16.getText();
+		    				String BackPath =textField_17.getText();
+		    				String fileDestination =textField_18.getText();
+		    				
+		        			GenerateCsv.generateCsvFile("c:\\11000.csv");
+		        			
+		            	}catch(Exception e){
+		            		e.printStackTrace();
+		            		System.out.println("Error in CSV ");
+		            	};
+		            	
+
+		            }
+		        });
+		        thread.start();
+				
+				
+				
+			}
+		});
+		btnNewButton_16.setBounds(374, 162, 148, 33);
+		panel_4.add(btnNewButton_16);
+		
+		JLabel lblNewLabel_23 = new JLabel("File Name :");
+		lblNewLabel_23.setBounds(10, 21, 71, 26);
+		panel_4.add(lblNewLabel_23);
+		
+		textField_15 = new JTextField();
+		textField_15.setBounds(132, 24, 148, 21);
+		panel_4.add(textField_15);
+		textField_15.setColumns(10);
+		textField_15.setText("11000");
+		
+		JLabel lblNewLabel_24 = new JLabel("Path GO :");
+		lblNewLabel_24.setBounds(10, 57, 71, 26);
+		panel_4.add(lblNewLabel_24);
+		
+		textField_16 = new JTextField();
+		textField_16.setBounds(132, 60, 408, 21);
+		panel_4.add(textField_16);
+		textField_16.setColumns(10);
+		textField_16.setText("PATH,110001,120.212079,22.996998,15,20,50");
+		
+		JLabel lblNewLabel_25 = new JLabel("Path BACK :");
+		lblNewLabel_25.setBounds(10, 93, 71, 15);
+		panel_4.add(lblNewLabel_25);
+		
+		textField_17 = new JTextField();
+		textField_17.setBounds(132, 90, 408, 21);
+		panel_4.add(textField_17);
+		textField_17.setColumns(10);
+		textField_17.setText("PATH,110002,120.309756,23.035659,15,20,20");
+		
+		JLabel lblNewLabel_26 = new JLabel("File Destination :");
+		lblNewLabel_26.setBounds(10, 125, 112, 15);
+		panel_4.add(lblNewLabel_26);
+		
+		textField_18 = new JTextField();
+		textField_18.setBounds(132, 121, 408, 21);
+		panel_4.add(textField_18);
+		textField_18.setColumns(10);
+		textField_18.setText("c:\\\\");
+		
 		
 		// keeps reference of standard output stream
         standardOut = System.out;
@@ -813,12 +984,11 @@ public class Server_UI extends JFrame {
 		contentPane.add(btnNewButton_14);
 		
 		
-		
 		try { //get Local IP address
 			InetAddress addr = InetAddress.getLocalHost();
 			String ip = addr.getHostAddress();
 			lblNewLabel_1.setText(ip);			
-			
+
 			//printLog();			
 									
 		} catch (UnknownHostException e) {
@@ -1297,6 +1467,4 @@ public class Server_UI extends JFrame {
 		
 		
 	}
-	
-	
 }

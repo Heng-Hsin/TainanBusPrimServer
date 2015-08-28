@@ -1258,6 +1258,7 @@ public static String[] getTrigger_LatLon(String TriggerID){
 
 
 
+
 public static String getCrossRoad_IPport(String CrossRoad){  
 	try{
 	  Vector a =dbGetString("SELECT [CrossRoadIP],[CrossRoadPort] FROM "
@@ -1289,6 +1290,24 @@ public static String getCrossRoad_IP(String CrossRoadID){
 	return IP;
 	}catch(Exception e){
 		System.out.println("Error in getCrossRoad_IP");
+		return null;
+	}
+}
+
+public static String getCrossRoad_BusLine_Seq(String BusLineID,String seq){
+	String IP="";
+	try{
+	
+	Vector a =dbGetString("SELECT distinct [CrossRoadID] FROM ["+DB_database_name+"].[dbo].[BusLine_Info_Tab] "
+			+ "where [BusLineID] ='"+BusLineID+"' and [BusLine_Order] ='"+seq+"' ");
+	
+	//SELECT [CrossRoadIP] FROM [TainanBusPrim].[dbo].[BusPrority_CrossRoad_Info_Tab] WHERE [CrossRoadID] ='0043'
+	
+	IP= a.toString().replace("[", "").replace("]", "").replace(" ", "");    
+	IP=IP.toUpperCase();
+	return IP;
+	}catch(Exception e){
+		System.out.println("Error in getBusLine_Seq");
 		return null;
 	}
 }
