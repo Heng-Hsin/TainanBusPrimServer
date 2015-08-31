@@ -91,6 +91,8 @@ public class Server_UI extends JFrame {
 	private JTextField textField_16;
 	private JTextField textField_17;
 	private JTextField textField_18;
+	private JTextField textField_19;
+	private JTextField textField_20;
 	
 	
 	
@@ -797,9 +799,12 @@ public class Server_UI extends JFrame {
 		    				String GoPath =textField_16.getText();
 		    				String BackPath =textField_17.getText();
 		    				String fileDestination =textField_18.getText();
+		    				String Port =textField_19.getText();
+		    				String range =textField_20.getText();
 		    				
-		        			//GenerateCsv.generateCsvFile("c:\\11000.csv");
-		        			
+		        			GenerateCsv.generateCsvFile(fileDestination+csvFileName+".csv",GoPath,BackPath,Port,range);
+		        			//generateCsvFile(String sFileName,String Gopath,String Backpath,String port,String Range)
+		    				
 		            	}catch(Exception e){
 		            		e.printStackTrace();
 		            		System.out.println("Error in CSV ");
@@ -814,7 +819,7 @@ public class Server_UI extends JFrame {
 				
 			}
 		});
-		btnNewButton_16.setBounds(374, 162, 148, 33);
+		btnNewButton_16.setBounds(584, 211, 148, 33);
 		panel_4.add(btnNewButton_16);
 		
 		JLabel lblNewLabel_23 = new JLabel("File Name :");
@@ -857,6 +862,25 @@ public class Server_UI extends JFrame {
 		textField_18.setColumns(10);
 		textField_18.setText("c:\\\\");
 		
+		JLabel lblNewLabel_27 = new JLabel("Transfer port :");
+		lblNewLabel_27.setBounds(10, 162, 91, 15);
+		panel_4.add(lblNewLabel_27);
+		
+		textField_19 = new JTextField();
+		textField_19.setBounds(132, 159, 96, 21);
+		panel_4.add(textField_19);
+		textField_19.setColumns(10);
+		textField_19.setText("21201");
+		
+		JLabel lblNewLabel_28 = new JLabel("Range :");
+		lblNewLabel_28.setBounds(10, 193, 71, 15);
+		panel_4.add(lblNewLabel_28);
+		
+		textField_20 = new JTextField();
+		textField_20.setText("25");
+		textField_20.setBounds(132, 190, 96, 21);
+		panel_4.add(textField_20);
+		textField_20.setColumns(10);
 		
 		// keeps reference of standard output stream
         standardOut = System.out;

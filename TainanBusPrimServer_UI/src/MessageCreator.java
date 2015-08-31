@@ -90,8 +90,8 @@ public static byte[] messagelength(byte[] bytes) {  //calculate message length
 public static void main(final String args[]) {
    
  		
- 		byte[] cmd=createpackage("01","FFFF", "5F8001");  //1.Seq 2.Addr 3.封包內容
- 		System.out.println("3.0 Packet  " + bytesToHex(cmd));    //包好的內容 拿這個跟你的比較
+ 		byte[] cmd=createpackage("01","FFFF", "5F1C02014E");  //1.Seq 2.Addr 3.封包內容
+ 		System.out.println("A.0 Packet  " + bytesToHex(cmd));    //包好的內容 拿這個跟你的比較
  		
  		byte[] cmd2=createpackage("01","2062", "5F190000000000");  //1.Seq 2.Addr 3.封包內容
  		System.out.println("4.0 Packet  " + bytesToHex(cmd2));    //包好的內容 拿這個跟你的比較

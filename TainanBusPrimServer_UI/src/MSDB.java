@@ -250,6 +250,16 @@ public static String getTrigPtype(String xroadid , String direct, int order){
 	return ptype;
 }
 
+public static String getGroupID_CrossRoadID(String CrossRoadID ){
+	String out="";
+	
+	Vector a =dbGetString("SELECT [GroupID] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] "
+			+ "where [CrossRoadID] ='"+CrossRoadID+"'");
+	out= a.toString().replace("[", "").replace("]", "").replace(" ", "");
+      		
+	return out;
+}
+
 public static String getGrabber_time(String CrossRoad_IP , String Table_name){
 	String time="";
 	
@@ -464,6 +474,16 @@ public static String[] getTrigID(String xroadid , String direct){
 	      }
 	      return x;
 	}
+   
+   public static String getRoadIP(String roadid ){
+		String out="";
+		
+		Vector a =dbGetString("SELECT [CrossRoadIP] FROM "
+				+ "["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab]where [CrossRoadID] ='"+roadid+"'");
+		out= a.toString().replace("[", "").replace("]", "").replace(" ", "");
+	      		
+		return out;
+	}
 	
    public static String[] getRoadDirect(String roadid){  
 		
@@ -606,7 +626,7 @@ public static String[] getTrigID(String xroadid , String direct){
 	      
 	}
 	
-	public static String[] getAllCrossroadIDOfGroup(String groupid){  //getting the distinct planid used by the group
+	public static String[] getAllCrossroadIDOfGroup(String groupid){  
 		
   Vector a =dbGetString(
 		  "SELECT [CrossRoadID] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] where [GroupID] ='"+groupid+"' order by [CrossRoadID]");      
@@ -1196,6 +1216,24 @@ public static String[] getAllCrossRoadsIP(){
 	}
 	}
 
+public static String[] getGPS_TriggerPointID(String TriggerpointID){  
+	try{
+	  Vector a =dbGetString("SELECT [Lat],[Lon] FROM ["+DB_database_name+"].[dbo].[BusPriority_TriggerPoint_Tab]"
+			  +"where [TriggerPointID]='"+TriggerpointID+"'");      
+	  String[] x= new String[a.size()];
+    
+    for(int i=0;i<a.size();i++){
+  	x[i]= (String) a.get(i);
+  	    	    	
+  	  //System.out.println(x[i]);
+    }
+    return x;
+	}catch(Exception e){
+		System.out.println("Error in getGPS_TriggerPointID");
+		return null;
+	}
+	}
+
 public static String[] getBusLine_Trigger(String BusLine,String Goback){  
 	try{
 	  Vector a =dbGetString("SELECT [TriggerPointID] FROM ["+DB_database_name+"].[dbo].[BusLine_Info_Tab] "
@@ -1290,6 +1328,24 @@ public static String getCrossRoad_IP(String CrossRoadID){
 	return IP;
 	}catch(Exception e){
 		System.out.println("Error in getCrossRoad_IP");
+		return null;
+	}
+}
+
+public static String getDirect_BusRoute(String BusRouteID){
+	String Direct="";
+	try{
+	
+	Vector a =dbGetString("SELECT [Direct] FROM ["+DB_database_name+"].[dbo].[BusLine_Direct] "
+			+ "where [BusLineID]='"+BusRouteID+"'");
+	
+	//SELECT [CrossRoadIP] FROM [TainanBusPrim].[dbo].[BusPrority_CrossRoad_Info_Tab] WHERE [CrossRoadID] ='0043'
+	
+	Direct= a.toString().replace("[", "").replace("]", "").replace(" ", "");    
+	Direct=Direct.toUpperCase();
+	return Direct;
+	}catch(Exception e){
+		System.out.println("Error in getDirect_BusRoute");
 		return null;
 	}
 }
@@ -2334,7 +2390,7 @@ public static ResultSet dbGetResult(String queryString){
        
          
          if(!rs.next()){
-    		 System.out.println("嚙踝��嚙踝蕭2");  
+    		 System.out.println(queryString+" There isn't any data");  
     		 }
          else{
          int size =0;
