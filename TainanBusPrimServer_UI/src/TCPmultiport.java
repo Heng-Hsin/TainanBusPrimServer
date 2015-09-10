@@ -499,6 +499,15 @@ public static void LastContact2(){
         	        		  //MSDB.update0F04Status(from,bytesToHex(recv));
         	        		  MSDB.update0F04Status_fromAddr(Addr,bytesToHex(recv));
         	        		  //System.out.println("0F04 "+bytesToHex(recv)+" from "+from);
+        	        		  
+        	        	  }else if((recv[0]==(byte)0x5F) && (recv[1]==(byte)0xB1)){
+        	        		  
+        	        		  //System.out.println("Got 5FB1 "+bytesToHex(recv)+ "From " +packet.getAddress().toString());
+        	        		  String tttIP=packet.getAddress().toString().replace("/", "");
+        	        		  String tttGroupID=MSDB.getGroupID_fromIP(tttIP);
+        	        		  
+        	        		  MSDB.Update_IPC_log(tttGroupID,bytesToHex(recv));
+        	        		  
         	        	  }
     	        		  
     	        	  }catch(Exception e){

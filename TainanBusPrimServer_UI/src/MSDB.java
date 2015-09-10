@@ -240,6 +240,26 @@ public static String[] getCrossRoadAddr_Group(String GroupID){
       return x;
 }
 
+public static String getGroupID(String CrossRoadID ){
+	String ptype="";
+	
+	Vector a =dbGetString("SELECT [GroupID] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] "
+			+ "where [CrossRoadID] ='"+CrossRoadID+"'");
+     ptype= a.toString().replace("[", "").replace("]", "").replace(" ", "");
+      		
+	return ptype;
+}
+
+public static String getGroupID_fromIP(String IP ){
+	String ptype="";
+	
+	Vector a =dbGetString("SELECT [GroupID] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab] "
+			+ "where [CrossRoadIP] ='"+IP+"'");
+     ptype= a.toString().replace("[", "").replace("]", "").replace(" ", "");
+      		
+	return ptype;
+}
+
 public static String getTrigPtype(String xroadid , String direct, int order){
 	String ptype="";
 	
@@ -1077,6 +1097,17 @@ public static int Update_Grabber_log(String CrossRoadIP,String TableName){
 	try{
 	 a =dbUpdate(" DELETE  FROM  ["+DB_database_name+"].[dbo].[DB_Grabber_log] Where [CrossRoad_IP]='"+CrossRoadIP+"'  and  [Table_Name]='"+TableName+"' ");  
          a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[DB_Grabber_log] ([CrossRoad_IP],[Table_Name],[Time]) VALUES ('"+CrossRoadIP+"','"+TableName+"',GETDATE());");
+	}catch (Exception e) {  
+		return a;  
+				}  
+   return a;
+   
+}
+
+public static int Update_IPC_log(String GroupID,String Version){
+	int a=0;
+	try{	  
+         a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[IPC_Version_Log] ([GroupID],[Version],[Time]) VALUES ('"+GroupID+"','"+Version+"',GETDATE());");
 	}catch (Exception e) {  
 		return a;  
 				}  

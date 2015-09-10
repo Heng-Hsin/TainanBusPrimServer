@@ -348,7 +348,7 @@ public class Server_UI extends JFrame {
 				
 				String uploadip=textField_3.getText();
 				String uploadport=textField_13.getText();
-				String uploadfilepath=textField_4.getText();
+				String uploadfilepath=textField_4.getText()+"\\";
 				String uploadfilename=textField_5.getText();
 				
 				if( uploadip.isEmpty() || uploadfilepath.isEmpty() || uploadfilename.isEmpty()){					
@@ -604,7 +604,7 @@ public class Server_UI extends JFrame {
 		tabbedPane.addTab("Bus Prim Switch", null, panel_3, null);
 		panel_3.setLayout(null);
 		
-		JLabel lblNewLabel_22 = new JLabel("Group ID :");
+		JLabel lblNewLabel_22 = new JLabel("CrossRoad ID :");
 		lblNewLabel_22.setBounds(10, 29, 106, 26);
 		panel_3.add(lblNewLabel_22);
 		
@@ -638,16 +638,16 @@ public class Server_UI extends JFrame {
 									
 									
 										//System.out.println("Group "+m);
-										
-										 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(Switchip);
-										 String MasterIP=MSDB.getCrossRoad_IP(Switchip);
-										 for(String c:CrossRoadAddr){
+									     String GroupID= MSDB.getGroupID(Switchip);
+										 //String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(Switchip);
+										 String MasterIP=MSDB.getCrossRoad_IP(GroupID);
+										 //for(String c:CrossRoadAddr){
 											 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-											byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.封包內容
+											byte[] cmd2=MessageCreator.createpackage("01",Switchip, "5F800100");  //1.Seq 2.Addr 3.封包內容
 											String message=Protocol.bytesToHex(cmd2);
 										 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 												UDPSender.Send(MasterIP,"20000",message);									
-										 }
+										 //}
 																		
 								
 								
@@ -658,16 +658,16 @@ public class Server_UI extends JFrame {
 									
 									
 										//System.out.println("Group "+m);
-										
-										 String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(Switchip);
-										 String MasterIP=MSDB.getCrossRoad_IP(Switchip);
-										 for(String c:CrossRoadAddr){
+									     String GroupID= MSDB.getGroupID(Switchip);
+										 //String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(Switchip);
+										 String MasterIP=MSDB.getCrossRoad_IP(GroupID);
+										 //for(String c:CrossRoadAddr){
 											 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-											byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.封包內容
+											byte[] cmd2=MessageCreator.createpackage("01",Switchip, "5F800101");  //1.Seq 2.Addr 3.封包內容
 											String message=Protocol.bytesToHex(cmd2);
 										 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 												UDPSender.Send(MasterIP,"20000",message);									
-										 }
+										 //}
 																		
 
 									
