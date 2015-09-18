@@ -1260,6 +1260,36 @@ public class Server_UI extends JFrame {
 	        thread.start();
 	    }
 	 
+	 private void Data_Compare() {
+	        Thread thread = new Thread(new Runnable() {
+	            @Override
+	            public void run() {
+	            	while(true){	            		
+	            		try{
+	            			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	                	    Date date = new Date();
+	                	    
+	                	    int int_hours=date.getHours();
+	                	    
+	                	    if(int_hours==0 ){  // Only at midnight
+	                	    		                	    	
+	                	    	
+	                	    	
+	                	    }
+	                	    
+	            			Thread.sleep(60*1000);
+	            			
+		            	}catch(Exception e){
+		            		e.printStackTrace();
+		            		System.out.println("Error in Data_Sync ");
+		            		
+		            	}
+	            	}
+	            }
+	        });
+	        thread.start();
+	    }
+	 
 	 
 	 public void updateGUI() {
 		   if (!SwingUtilities.isEventDispatchThread()) {
