@@ -59,11 +59,15 @@ public class Server_UI extends JFrame {
 	public static String[] MasterIP;  // All IPC IP
 	
 
-	private static String DBDriver;
-	private static String DB_connect_string;
-	private static String DB_userid;
-	private static String DB_password;
-	private static String DB_database_name;
+	public static String DBDriver;
+	public static String DB_connect_string;
+	public static String DB_userid;
+	public static String DB_password;
+	public static String DB_database_name;
+	
+	public static String localDBIP;
+	public static String CrossRoadDB_userid;
+	public static String CrossRoadDB_password;
 	
 	public static Date Systemstart;
 	private PrintStream standardOut;
@@ -120,7 +124,7 @@ public class Server_UI extends JFrame {
 	 */
 	public Server_UI() {
 		
-		super("¥x«n ¤½¨®Àu¥ı³q°T¦øªA¾¹");
+		super("å°å—å…¬è»Šå„ªå…ˆ é€šè¨Šå¸æœå™¨");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1252, 760);
 		contentPane = new JPanel();
@@ -129,7 +133,7 @@ public class Server_UI extends JFrame {
 		contentPane.setLayout(null);
 		
 		
-		JLabel lblNewLabel = new JLabel("¥»¾÷ IP : ");
+		JLabel lblNewLabel = new JLabel("æœ¬æ©Ÿ  IP : ");
 		lblNewLabel.setBounds(10, 10, 59, 23);
 		contentPane.add(lblNewLabel);
 		
@@ -137,7 +141,7 @@ public class Server_UI extends JFrame {
 		lblNewLabel_1.setBounds(71, 14, 110, 15);
 		contentPane.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("ºô­¶¦øªA¾¹IP :");
+		JLabel lblNewLabel_2 = new JLabel("ç¶²é ä¼ºæœå™¨IP :");
 		lblNewLabel_2.setBounds(10, 43, 94, 15);
 		contentPane.add(lblNewLabel_2);
 		
@@ -145,7 +149,7 @@ public class Server_UI extends JFrame {
 		lblNewLabel_3.setBounds(102, 43, 110, 15);
 		contentPane.add(lblNewLabel_3);
 		
-		JLabel lblNewLabel_4 = new JLabel("¸ê®Æ®w :");
+		JLabel lblNewLabel_4 = new JLabel("è³‡æ–™åº« :");
 		lblNewLabel_4.setBounds(10, 68, 59, 15);
 		contentPane.add(lblNewLabel_4);
 		
@@ -643,7 +647,7 @@ public class Server_UI extends JFrame {
 										 String MasterIP=MSDB.getCrossRoad_IP(GroupID);
 										 //for(String c:CrossRoadAddr){
 											 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-											byte[] cmd2=MessageCreator.createpackage("01",Switchip, "5F800100");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+											byte[] cmd2=MessageCreator.createpackage("01",Switchip, "5F800100");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
 											String message=Protocol.bytesToHex(cmd2);
 										 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 												UDPSender.Send(MasterIP,"20000",message);									
@@ -663,7 +667,7 @@ public class Server_UI extends JFrame {
 										 String MasterIP=MSDB.getCrossRoad_IP(GroupID);
 										 //for(String c:CrossRoadAddr){
 											 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-											byte[] cmd2=MessageCreator.createpackage("01",Switchip, "5F800101");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+											byte[] cmd2=MessageCreator.createpackage("01",Switchip, "5F800101");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
 											String message=Protocol.bytesToHex(cmd2);
 										 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 												UDPSender.Send(MasterIP,"20000",message);									
@@ -718,7 +722,7 @@ public class Server_UI extends JFrame {
 	        								 String MasterIP=MSDB.getCrossRoad_IP(m);
 	        								 for(String c:CrossRoadAddr){
 	        									 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
 	        									String message=Protocol.bytesToHex(cmd2);
 	        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 	        										UDPSender.Send(MasterIP,"20000",message);									
@@ -747,7 +751,7 @@ public class Server_UI extends JFrame {
 	        								 String MasterIP=MSDB.getCrossRoad_IP(m);
 	        								 for(String c:CrossRoadAddr){
 	        									 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
 	        									String message=Protocol.bytesToHex(cmd2);
 	        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 	        										UDPSender.Send(MasterIP,"20000",message);									
@@ -998,8 +1002,16 @@ public class Server_UI extends JFrame {
 		btnNewButton_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				Thread thread = new Thread(new Runnable() {
+		            @Override
+		            public void run() { 
+		            	
+		            	CrossRoadCenter_Sync.DataVerify_start();
+		            	
+		            }
+		        });
+		        thread.start();
 				
-				CrossRoadCenter_Sync.DataVerify_start();
 	     
 							
 			}
@@ -1209,7 +1221,7 @@ public class Server_UI extends JFrame {
 								 String MasterIP=MSDB.getCrossRoad_IP(m);
 								 for(String c:CrossRoadAddr){
 									 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-									byte[] cmd2=MessageCreator.createpackage("01",c, "5F9001");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+									byte[] cmd2=MessageCreator.createpackage("01",c, "5F9001");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
 									String message=Protocol.bytesToHex(cmd2);
 								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 										UDPSender.Send(MasterIP,"20000",message);									
@@ -1331,6 +1343,13 @@ public class Server_UI extends JFrame {
 						DB_password=prop.getProperty("MSSQL_password");
 						DB_database_name=prop.getProperty("MSSQL_DatabaseName");
 						
+						localDBIP=prop.getProperty("LocalDB_IP");
+					 	
+						CrossRoadDB_userid=prop.getProperty("CrossRoadDB_userid");
+						CrossRoadDB_password=prop.getProperty("CrossRoadDB_password");		
+						
+						 
+						
 						/*
 					System.out.println(" userInterfaceIP "+userInterfaceIP);
 					System.out.println(" userInterfacePort "+userInterfacePort);
@@ -1404,7 +1423,7 @@ public class Server_UI extends JFrame {
 	        								 String MasterIP=MSDB.getCrossRoad_IP(m);
 	        								 for(String c:CrossRoadAddr){
 	        									 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
 	        									String message=Protocol.bytesToHex(cmd2);
 	        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 	        										UDPSender.Send(MasterIP,"20000",message);									
@@ -1433,7 +1452,7 @@ public class Server_UI extends JFrame {
 	        								 String MasterIP=MSDB.getCrossRoad_IP(m);
 	        								 for(String c:CrossRoadAddr){
 	        									 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+	        									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
 	        									String message=Protocol.bytesToHex(cmd2);
 	        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 	        										UDPSender.Send(MasterIP,"20000",message);									
@@ -1466,14 +1485,14 @@ public class Server_UI extends JFrame {
 	             								
 	             								if(StatusType_Addr.contains("9")){
 	             									System.out.println("Turn On "+c);
-	             									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+	             									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800101");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
 		        									String message=Protocol.bytesToHex(cmd2);
 		        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 		        										UDPSender.Send(MasterIP,"20000",message);		             									
 	             									
 	             								} else if(StatusType_Addr.contains("8")){
 	             									System.out.println("Turn Off "+c);
-	             									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+	             									byte[] cmd2=MessageCreator.createpackage("01",c, "5F800100");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
 		        									String message=Protocol.bytesToHex(cmd2);
 		        								 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
 		        										UDPSender.Send(MasterIP,"20000",message);	             									
