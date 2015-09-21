@@ -997,9 +997,9 @@ public class Server_UI extends JFrame {
 		JButton btnNewButton_14 = new JButton(" Test ");
 		btnNewButton_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//MSDB.check0F04status("172.23.25.27");
 				
 				
+				CrossRoadCenter_Sync.DataVerify_start();
 	     
 							
 			}
@@ -1281,7 +1281,7 @@ public class Server_UI extends JFrame {
 	            			
 		            	}catch(Exception e){
 		            		e.printStackTrace();
-		            		System.out.println("Error in Data_Sync ");
+		            		System.out.println("Error in Data_Compare ");
 		            		
 		            	}
 	            	}
