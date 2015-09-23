@@ -1007,7 +1007,7 @@ public class Server_UI extends JFrame {
 				Thread thread = new Thread(new Runnable() {
 		            @Override
 		            public void run() { 
-		            	
+		            	StrategySetting.Default_strategy_settings();
 
 		            	}
 		        });
@@ -1071,7 +1071,7 @@ public class Server_UI extends JFrame {
 				DBconnection();
 				IPCconnection();
 				CrossRoadCollector();
-				
+				Data_Compare();
 				
 				if(mssql.dbConnection()){
 					
