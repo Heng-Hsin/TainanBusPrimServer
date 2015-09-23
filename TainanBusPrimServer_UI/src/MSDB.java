@@ -1115,6 +1115,18 @@ public static int Update_IPC_log(String GroupID,String Version){
    
 }
 
+public static int Update_DB_Compare_log(String TableName,String IP,String CrossroadID,String Result,String Report){
+	int a=0;	
+	try{	  
+         a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[DB_Compare_Log] ([Table_Name],[IP],[CrossRoadID],[Result],[Report],[Time]) VALUES "
+         		+ "('"+TableName+"','"+IP+"','"+CrossroadID+"','"+Result+"','"+Report+"',GETDATE());");
+	}catch (Exception e) {  
+		return a;  
+				}  
+   return a;
+   
+}
+
 public static String[] getCompareClock(){
 	
 	try{Vector a =dbGetString("SELECT * FROM [taipei_db].[dbo].[COMPARECLOCK]");           
@@ -2710,9 +2722,7 @@ public static ResultSet dbGetResult(String queryString){
 	      
 	      ResultSetMetaData metaDt = rs.getMetaData();
 	      int cols = metaDt.getColumnCount();
-	     
-
-	     
+	     	     
 	      //System.out.println("Total rows "+size);
 	      return rs;
 	   } catch (Exception e) {

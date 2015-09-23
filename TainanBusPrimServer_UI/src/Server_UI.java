@@ -75,6 +75,7 @@ public class Server_UI extends JFrame {
 	public static JButton btnNewButton_6;
 	public static JButton btnNewButton_1;
 	public static JButton btnNewButton_10;
+	public static JButton btnNewButton_15;
 	public JComboBox comboBox;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -1002,28 +1003,48 @@ public class Server_UI extends JFrame {
 		btnNewButton_14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				
 				Thread thread = new Thread(new Runnable() {
 		            @Override
 		            public void run() { 
 		            	
-		            	CrossRoadCenter_Sync.DataVerify_start();
+
+		            	}
+		        });
+		        thread.start();
+	     
+							
+			}
+		});	
+		btnNewButton_14.setBounds(318, 35, 87, 23);
+		contentPane.add(btnNewButton_14);
+		
+		JButton btnNewButton_15 = new JButton("Data Check");
+		btnNewButton_15.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Thread thread = new Thread(new Runnable() {
+		            @Override
+		            public void run() { 
+		            	System.out.println("Start Data Check");
 		            	
+		            	CrossRoadCenter_Sync.BusLine_Info_Tab_DataVerify_start();
+		            	CrossRoadCenter_Sync.BusPriority_TriggerPoint_Tab_DataVerify_start();
+		            	//CrossRoadCenter_Sync.BusStrategy_Set_DataVerify_start();
 		            }
 		        });
 		        thread.start();
 				
-	     
-							
 			}
 		});
-		btnNewButton_14.setBounds(318, 35, 87, 23);
-		contentPane.add(btnNewButton_14);
+		btnNewButton_15.setBounds(984, 64, 122, 23);
+		contentPane.add(btnNewButton_15);
 		
 		
 		try { //get Local IP address
 			InetAddress addr = InetAddress.getLocalHost();
 			String ip = addr.getHostAddress();
 			lblNewLabel_1.setText(ip);			
+
 
 			//printLog();			
 									
@@ -1282,10 +1303,11 @@ public class Server_UI extends JFrame {
 	                	    Date date = new Date();
 	                	    
 	                	    int int_hours=date.getHours();
+	                	    int int_minutes=date.getMinutes();
 	                	    
-	                	    if(int_hours==0 ){  // Only at midnight
+	                	    if(int_hours==0 && int_minutes==30 ){  // Only at midnight
 	                	    		                	    	
-	                	    	
+	                	    	btnNewButton_15.doClick();
 	                	    	
 	                	    }
 	                	    
