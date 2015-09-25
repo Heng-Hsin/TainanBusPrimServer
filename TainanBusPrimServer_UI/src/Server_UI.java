@@ -1305,11 +1305,20 @@ public class Server_UI extends JFrame {
 	                	    int int_hours=date.getHours();
 	                	    int int_minutes=date.getMinutes();
 	                	    
-	                	    if(int_hours==0 && int_minutes==30 ){  // Only at midnight
+	                	    if(int_hours==11 && int_minutes==30 ){  //11:30
 	                	    		                	    	
-	                	    	btnNewButton_15.doClick();
 	                	    	
+	            		            	System.out.println("Start Data Check");
+	            		            	
+	            		            	CrossRoadCenter_Sync.BusLine_Info_Tab_DataVerify_start();
+	            		            	CrossRoadCenter_Sync.BusPriority_TriggerPoint_Tab_DataVerify_start();
+	            		            	//CrossRoadCenter_Sync.BusStrategy_Set_DataVerify_start();
+	            		       
+	                	    	
+	                	    }else{
+	                	    	//System.out.println("It is now "+int_hours+":"+int_minutes);
 	                	    }
+	                	    
 	                	    
 	            			Thread.sleep(60*1000);
 	            			
