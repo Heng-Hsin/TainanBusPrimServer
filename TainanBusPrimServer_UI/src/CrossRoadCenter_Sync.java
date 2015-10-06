@@ -38,6 +38,7 @@ public class CrossRoadCenter_Sync {
 			 String DB_connect="jdbc:microsoft:sqlserver://XXXX:1433;DatabaseName="+DB_name;
 			 
 			 String Comparing_TableName ="BusLine_Info_Tab";
+			 int data_perRow =8;
 			 
 			for(String IP:MasterIP){
 				
@@ -133,7 +134,25 @@ public class CrossRoadCenter_Sync {
 										  same_count++;
 									  }else{
 										  //System.out.println(CrossRoadID+" Center Data "+centerVector.get(v)+" Remote Data "+remoteVector.get(v));	
-										  report=report+CrossRoadID+" Center Data "+centerVector.get(v)+" Remote Data "+remoteVector.get(v)+";";
+										  int rownumber=v/data_perRow;
+										  String UnSyncedLine_center="*";
+										  String UnSyncedLine_remote="#";
+										  
+										  for(int k=0;k<data_perRow;k++){
+											  int vector_position=rownumber*data_perRow+k;
+											  
+											  if(k<data_perRow-1){
+												  UnSyncedLine_center=UnSyncedLine_center+centerVector.get(vector_position)+",";
+												  UnSyncedLine_remote=UnSyncedLine_remote+remoteVector.get(vector_position)+","; 
+											  }else{
+												  UnSyncedLine_center=UnSyncedLine_center+centerVector.get(vector_position)+"*";
+												  UnSyncedLine_remote=UnSyncedLine_remote+remoteVector.get(vector_position)+"#"; 
+											  }
+											  
+										  }
+										  
+										  report=report+CrossRoadID+" Center Data ( "+centerVector.get(v)+" ) "+UnSyncedLine_center+" Remote Data ( "+remoteVector.get(v)+" ) "+UnSyncedLine_remote+";";
+										  
 									  }	  									  
 								  }
 								  
@@ -206,6 +225,7 @@ public class CrossRoadCenter_Sync {
 			 String DB_connect="jdbc:microsoft:sqlserver://XXXX:1433;DatabaseName="+DB_name;
 			 
 			 String Comparing_TableName ="BusPriority_TriggerPoint_Tab";
+			 int data_perRow =9;
 			 
 			for(String IP:MasterIP){
 				
@@ -300,8 +320,26 @@ public class CrossRoadCenter_Sync {
 										  //System.out.println("")
 										  same_count++;
 									  }else{
-										  //System.out.println(CrossRoadID+" Center Data "+centerVector.get(v)+" Remote Data "+remoteVector.get(v));	
-										  report=report+CrossRoadID+" Center Data "+centerVector.get(v)+" Remote Data "+remoteVector.get(v)+";";
+										  //System.out.println(CrossRoadID+" Center Data "+centerVector.get(v)+" Remote Data "+remoteVector.get(v));
+										  
+										  int rownumber=v/data_perRow;
+										  String UnSyncedLine_center="*";
+										  String UnSyncedLine_remote="#";
+										  
+										  for(int k=0;k<data_perRow;k++){
+											  int vector_position=rownumber*data_perRow+k;
+											  
+											  if(k<data_perRow-1){
+												  UnSyncedLine_center=UnSyncedLine_center+centerVector.get(vector_position)+",";
+												  UnSyncedLine_remote=UnSyncedLine_remote+remoteVector.get(vector_position)+","; 
+											  }else{
+												  UnSyncedLine_center=UnSyncedLine_center+centerVector.get(vector_position)+"*";
+												  UnSyncedLine_remote=UnSyncedLine_remote+remoteVector.get(vector_position)+"#"; 
+											  }
+											  
+										  }
+										  
+										  report=report+CrossRoadID+" Center Data ( "+centerVector.get(v)+" ) "+UnSyncedLine_center+" Remote Data ( "+remoteVector.get(v)+" ) "+UnSyncedLine_remote+";";
 									  }	  									  
 								  }
 								  

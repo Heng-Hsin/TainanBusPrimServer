@@ -1115,6 +1115,18 @@ public static int Update_IPC_log(String GroupID,String Version){
    
 }
 
+public static int delete_DB_Compare_log(){
+	int a=0;
+	try{
+	  a =dbUpdate(" DELETE FROM  ["+DB_database_name+"].[dbo].[DB_Compare_Log];");           
+	}catch (Exception e) {  
+		return a;  
+	} 
+	
+    return a;
+}
+
+
 public static int Update_DB_Compare_log(String TableName,String IP,String CrossroadID,String Result,String Report){
 	int a=0;	
 	try{	  

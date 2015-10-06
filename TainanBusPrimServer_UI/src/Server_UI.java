@@ -1026,7 +1026,7 @@ public class Server_UI extends JFrame {
 		            @Override
 		            public void run() { 
 		            	System.out.println("Start Data Check");
-		            	
+		            	MSDB.delete_DB_Compare_log();
 		            	CrossRoadCenter_Sync.BusLine_Info_Tab_DataVerify_start();
 		            	CrossRoadCenter_Sync.BusPriority_TriggerPoint_Tab_DataVerify_start();
 		            	//CrossRoadCenter_Sync.BusStrategy_Set_DataVerify_start();
@@ -1305,11 +1305,11 @@ public class Server_UI extends JFrame {
 	                	    int int_hours=date.getHours();
 	                	    int int_minutes=date.getMinutes();
 	                	    
-	                	    if(int_hours==11 && int_minutes==30 ){  //11:30
+	                	    if(int_hours==1 && int_minutes==30 ){  
 	                	    		                	    	
 	                	    	
 	            		            	System.out.println("Start Data Check");
-	            		            	
+	            		            	MSDB.delete_DB_Compare_log();
 	            		            	CrossRoadCenter_Sync.BusLine_Info_Tab_DataVerify_start();
 	            		            	CrossRoadCenter_Sync.BusPriority_TriggerPoint_Tab_DataVerify_start();
 	            		            	//CrossRoadCenter_Sync.BusStrategy_Set_DataVerify_start();
