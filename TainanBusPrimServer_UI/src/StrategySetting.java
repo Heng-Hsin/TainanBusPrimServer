@@ -1,6 +1,6 @@
 
 public class StrategySetting {
-	public static final String[] StrategyTypes={"LOW_SPEED","NEAR_STATION","SHORT_CROSSROAD","LOCK_BUSID","ADV_COMPENSATE","ADV_MULTI_BUS","ADV_MULTI_PHASE"};
+	public static final String[] StrategyTypes={"LOW_SPEED","NEAR_BUSSTOP","SHORT_CROSSROAD","LOCK_BUSID","ADV_COMPENSATE","ADV_MULTI_BUS","ADV_MULTI_PHASE"};
 
 	public static void Default_strategy_settings(){
 	

@@ -1142,7 +1142,7 @@ public static int Update_DB_Compare_log(String TableName,String IP,String Crossr
 public static int Default_strategy_settings(String CrossRoadID,String StrategyType){
 	int a=0;
 	try{	  
-         a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[BusStrategy_Set_Tab] ([CrossRoadID],[StrategyType],[Enable],[UpdateTime]) VALUES ('"+CrossRoadID+"','"+StrategyType+"','0',GETDATE());");
+         a =a+dbUpdate("INSERT into ["+DB_database_name+"].[dbo].[BusStrategy_Set] ([CrossRoadID],[StrategyType],[Enable],[UpdateTime]) VALUES ('"+CrossRoadID+"','"+StrategyType+"','0',GETDATE());");
 	}catch (Exception e) {  
 		return a;  
 				}  
