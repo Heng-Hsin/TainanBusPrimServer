@@ -2141,6 +2141,7 @@ public static int insertTPbasicGreen(String deviceid,byte[] command){
    return a;
 }
 
+
 public static String[] getSpecialDaySegmenttype(String groupid){
 	
 	
@@ -2755,6 +2756,7 @@ public static ResultSet dbGetResult(String queryString){
 			   	   
 	   
 	}
+   
    
    
 

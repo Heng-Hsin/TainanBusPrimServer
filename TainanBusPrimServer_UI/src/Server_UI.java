@@ -502,7 +502,7 @@ public class Server_UI extends JFrame {
 		textField_6.setBounds(165, 22, 200, 21);
 		panel_2.add(textField_6);
 		textField_6.setColumns(10);
-		textField_6.setText("172.23.25.1");
+		textField_6.setText("192.168.234.1");
 		
 		
 		textField_7 = new JTextField();
@@ -515,13 +515,13 @@ public class Server_UI extends JFrame {
 		textField_8.setBounds(165, 72, 200, 21);
 		panel_2.add(textField_8);
 		textField_8.setColumns(10);
-		textField_8.setText("tycgtcipc");
+		textField_8.setText("ceciits");
 		
 		textField_9 = new JTextField();
 		textField_9.setBounds(165, 120, 200, 21);
 		panel_2.add(textField_9);
 		textField_9.setColumns(10);
-		textField_9.setText("172.23.31.1");
+		textField_9.setText("192.168.200.112");
 		
 		textField_10 = new JTextField();
 		textField_10.setBounds(165, 145, 200, 21);
@@ -533,7 +533,7 @@ public class Server_UI extends JFrame {
 		textField_11.setBounds(165, 170, 200, 21);
 		panel_2.add(textField_11);
 		textField_11.setColumns(10);
-		textField_11.setText("tybuspriM1234");
+		textField_11.setText("tn@vm01");
 		
 		JLabel lblNewLabel_19 = new JLabel("Data Selection Query");
 		lblNewLabel_19.setBounds(10, 251, 161, 21);
@@ -545,7 +545,7 @@ public class Server_UI extends JFrame {
 		
 		final JTextArea textArea_1 = new JTextArea();
 		scrollPane_1.setViewportView(textArea_1);
-		textArea_1.setText("SELECT * FROM [TaoyuanBusPrim].[dbo].[BusA1_Log]");
+		textArea_1.setText("SELECT * FROM [TainanBusPrim].[dbo].[BusStrategy_Log]");
 		
 		JButton btnNewButton_5 = new JButton("Execute");
 		btnNewButton_5.addActionListener(new ActionListener() {
@@ -553,14 +553,14 @@ public class Server_UI extends JFrame {
 				
 				 String CrossRoadIP= textField_6.getText();
 				 String temp_driver="com.microsoft.jdbc.sqlserver.SQLServerDriver";
-				 String temp_connect="jdbc:microsoft:sqlserver://"+CrossRoadIP+":1433;DatabaseName=TaoyuanBusPrim";
+				 String temp_connect="jdbc:microsoft:sqlserver://"+CrossRoadIP+":1433;DatabaseName=TainanBusPrim";
 				 String temp_userid=textField_7.getText().trim();
 	        	 String temp_password=textField_8.getText().trim();
 	        	 String temp_query=textArea_1.getText();
 	        	 
 	        	 String localIP= textField_9.getText();
 	        	 String local_driver="com.microsoft.jdbc.sqlserver.SQLServerDriver";
-				 String local_connect="jdbc:microsoft:sqlserver://"+localIP+":1433;DatabaseName=TaoyuanBusPrim";
+				 String local_connect="jdbc:microsoft:sqlserver://"+localIP+":1433;DatabaseName=TainanBusPrim";
 				 String local_userid=textField_10.getText().trim();
 	        	 String local_password=textField_11.getText().trim();
 	        	 String local_table = textField_12.getText().trim();
