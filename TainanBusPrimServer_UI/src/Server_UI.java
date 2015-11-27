@@ -109,6 +109,7 @@ public class Server_UI extends JFrame {
 			public void run() {
 				try {
 					Systemstart = new Date();
+					SystemLogger.WriteLog(" System Start ************ ");
 					ClearText();
 					Server_UI frame = new Server_UI();
 					frame.setVisible(true);

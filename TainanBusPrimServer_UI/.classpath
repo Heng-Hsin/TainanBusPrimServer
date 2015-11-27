@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/JAR FILES/log4j-core-2.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/JAR FILES/log4j-api-2.4.1.jar"/>
 	<classpathentry kind="lib" path="C:/JAR FILES/microsoft-mssqlserver.jar/microsoft-mssqlserver.jar"/>
 	<classpathentry kind="lib" path="C:/JAR FILES/ojdbc5.jar"/>
 	<classpathentry kind="lib" path="C:/JAR FILES/ojdbc6.jar"/>

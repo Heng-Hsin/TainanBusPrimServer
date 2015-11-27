@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <!-- Console 為 console 顯示 log 格式的設定-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n" />
+        </Console>
+        <!-- DailyFile 為以日為單位儲存的 log 檔設定 -->
+        <RollingFile name="DailyFile" fileName="logs/System_log.log"
+            filePattern="logs/System_log-%d{yyyy-MM-dd}~%i.log">
+            <PatternLayout>
+                <Pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - %msg%n
+                </Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="100 MB" />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.apache.log4j.xml" level="info" />
+        <Root level="debug">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="DailyFile" />
+        </Root>
+    </Loggers>
+</Configuration>

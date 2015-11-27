@@ -342,7 +342,7 @@ public static void LastContact2(){
         		 Socket sc  = ss.accept();                // receive 
            		  
            		 System.out.println(sc.getLocalSocketAddress().toString()+" "+new java.util.Date());   
-                 OutputStream os = sc.getOutputStream();    // get stream¡C
+                 OutputStream os = sc.getOutputStream();    // get streamï¿½C
                  InputStream in = sc.getInputStream(); 
                  int len=0;
                  byte[] buf=new byte[2048];   
@@ -353,7 +353,7 @@ public static void LastContact2(){
                 	 
            		   String first=udprecv.firstElement();
            		   byte[] tcpsend=hexStringToByteArray(first);
-                   os.write(tcpsend);//Send to Client¡C
+                   os.write(tcpsend);//Send to Clientï¿½C
                    os.flush();
                    System.out.println("Sent by TCP "+bytesToHex(tcpsend)+" "+new java.util.Date());
                    udprecv.removeElementAt(0);
@@ -383,7 +383,7 @@ public static void LastContact2(){
                     serverinput.reset();  
                     /*
                     byte[] tcpsend=serverinput.toByteArray();
-                    os.write(tcpsend);//Send to Client¡C
+                    os.write(tcpsend);//Send to Clientï¿½C
                     os.flush();
                     System.out.println("Sent by TCP "+bytesToHex(tcpsend));
                     */
@@ -391,7 +391,7 @@ public static void LastContact2(){
                     while( !(udprecv.isEmpty())){
                			String first=udprecv.firstElement();
                			byte[] tcpsend=hexStringToByteArray(first);
-                       os.write(tcpsend);    //Send to Client¡C
+                       os.write(tcpsend);    //Send to Clientï¿½C
                        os.flush();
                        System.out.println("Sent by TCP "+bytesToHex(tcpsend));
                        udprecv.removeElementAt(0);                                                                              
@@ -404,8 +404,8 @@ public static void LastContact2(){
         		 }
                                                            
                 
-                 os.close();                                // Close stream¡C
-                 sc.close();                                // Shutdown TCP server¡C
+                 os.close();                                // Close streamï¿½C
+                 sc.close();                                // Shutdown TCP serverï¿½C
            	
              }
         	 }catch(Exception e){
@@ -478,20 +478,23 @@ public static void LastContact2(){
     	        		  
     	        		  if((recv[0]==(byte)0x5F) && (recv[1]==(byte)0xA0)){
         	        		  System.out.println("Got 5FA0 "+bytesToHex(recv)+ "From " +packet.getAddress().toString());
+        	        		  SystemLogger.WriteLog("Got 5FA0 "+bytesToHex(recv)+ "From " +packet.getAddress().toString());
+        	        		  
         	        		  if((recv[2]==(byte)0x01) && (recv[3]==(byte)0x01) ){
         	        		  //MSDB.updateIPCStatus(from,9);
         	        		  MSDB.updateIPCStatus_fromAddr(Addr,9);
         	        		  //MSDB.updateIPCOnOff(from,4);
         	        		  MSDB.updateIPCOnOff_fromAddr(Addr,4);
         	        		  System.out.println("BusPrime On "+from+" Addr "+Addr);
-        	        		  
+        	        		  SystemLogger.WriteLog("BusPrime On "+from+" Addr "+Addr);
         	        		  }
         	        		  if((recv[2]==(byte)0x01) && (recv[3]==(byte)0x00) ){
             	        		  //MSDB.updateIPCStatus(from,8);
             	        		  MSDB.updateIPCStatus_fromAddr(Addr,8);
             	        		  //MSDB.updateIPCOnOff(from,4);
             	        		  MSDB.updateIPCOnOff_fromAddr(Addr,4);
-            	        		  System.out.println("BusPrime Off "+from);
+            	        		  System.out.println("BusPrime Off "+from+" Addr "+Addr);
+            	        		  SystemLogger.WriteLog("BusPrime Off "+from+" Addr "+Addr);
             	        		  }
         	        		  
         	        	  }else if((recv[0]==(byte)0x0F) && (recv[1]==(byte)0x04)){
@@ -499,6 +502,7 @@ public static void LastContact2(){
         	        		  //MSDB.update0F04Status(from,bytesToHex(recv));
         	        		  MSDB.update0F04Status_fromAddr(Addr,bytesToHex(recv));
         	        		  //System.out.println("0F04 "+bytesToHex(recv)+" from "+from);
+        	        		  SystemLogger.WriteLog(Addr+" "+bytesToHex(recv));
         	        		  
         	        	  }else if((recv[0]==(byte)0x5F) && (recv[1]==(byte)0xB1)){
         	        		  
@@ -507,12 +511,15 @@ public static void LastContact2(){
         	        		  String tttGroupID=MSDB.getGroupID_fromIP(tttIP);
         	        		  
         	        		  MSDB.Update_IPC_log(tttGroupID,bytesToHex(recv));
+        	        		  SystemLogger.WriteLog(tttGroupID+" "+bytesToHex(recv));
         	        		  
         	        	  }
     	        		  
     	        	  }catch(Exception e){
     	        		  System.out.println("TCPmultiport IPC UDP receive Error ");
     	        		  e.printStackTrace();
+    	        		  SystemLogger.WriteLog("########TCPmultiport IPC UDP receive Error ");
+    	        		  SystemLogger.WriteLog(e.toString());
     	        	  }
     	        	  
     	        	  
@@ -710,7 +717,7 @@ public static void LastContact2(){
             	  			String[] OTAfile=MSDB.getOTAFilePath(msgrcver);
             	  			
             	  			try{
-            	  				//msgrcver   Roadid   AAAA ´Ä½u   BBBB ºñ½u  FFFF ¥þ½u
+            	  				//msgrcver   Roadid   AAAA ï¿½Ä½u   BBBB ï¿½ï¿½u  FFFF ï¿½ï¿½ï¿½u
             	  				
             	  				if(msgrcver.equalsIgnoreCase("AAAA")){
             	  					System.out.println("Brown Line OTA");
@@ -853,7 +860,7 @@ public static void LastContact2(){
     									 
     									 /*
     									 System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-    									byte[] cmd2=MessageCreator.createpackage("01",c, "5F9001");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+    									byte[] cmd2=MessageCreator.createpackage("01",c, "5F9001");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
     									String message3=Protocol.bytesToHex(cmd2);
     								 		System.out.println("Message  " + Protocol.bytesToHex(cmd2));
     										UDPSender.Send(MasterIP,"20000",message);		
@@ -892,7 +899,7 @@ public static void LastContact2(){
     									 
     									 /*
     									 System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
-    									byte[] cmd2=MessageCreator.createpackage("01",c, "5F9001");  //1.Seq 2.Addr 3.«Ê¥]¤º®e
+    									byte[] cmd2=MessageCreator.createpackage("01",c, "5F9001");  //1.Seq 2.Addr 3.ï¿½Ê¥]ï¿½ï¿½ï¿½e
     									String message3=Protocol.bytesToHex(cmd2);
     								 		System.out.println("Message  " + Protocol.bytesToHex(cmd2));
     										UDPSender.Send(MasterIP,"20000",message);		

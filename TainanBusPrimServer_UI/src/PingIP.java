@@ -49,6 +49,7 @@ public class PingIP {
 					if(fullconnection.contains(ip)){
 						fullconnection.removeElement(ip);
 					}
+					
 				}
 				else if(s.contains("0%") && fullconnection.contains(ip)==false){
 					fullconnection.addElement(ip);
@@ -58,6 +59,7 @@ public class PingIP {
 				
 				}
 				
+				SystemLogger.WriteLog(" IP "+ip+" "+s);
 			}
  
 		} catch (Exception e) {

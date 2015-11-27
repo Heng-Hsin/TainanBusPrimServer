@@ -123,7 +123,8 @@ public class DB_ThreadPool extends Thread {
         }  
       
         public void run() { 
-        	System.out.println(Thread.currentThread().getName() +" Begins Data Collecting " + id); 
+        	System.out.println(Thread.currentThread().getName() +" Begins Data Collecting " + id);
+        	SystemLogger.WriteLog(Thread.currentThread().getName() +" Begins Data Collecting " + id);
         	
         	//WHERE Date between dateadd(hour, -1, getdate()) and getdate();
         	try{
@@ -201,13 +202,14 @@ public class DB_ThreadPool extends Thread {
 							//System.out.println(" temp_driver "+temp_driver+" temp_connect "+temp_connect+" temp_userid "+temp_userid+" temp_password "+temp_password+" Query[i] "+Query[i]);
 							attempt=3;
 							System.out.println(id+" "+localtable[i]+" download complete");
-							
+							SystemLogger.WriteLog(id+" "+localtable[i]+" download complete");
 							MSDB.Update_Grabber_log(id,localtable[i]);
 							
 						} catch (Exception e) {							
 							attempt++;
 							if(attempt>2){
 								System.out.println(id+" Failed to download");
+								SystemLogger.WriteLog(id+" Failed to download");
 							}
 						}						
 					}  
