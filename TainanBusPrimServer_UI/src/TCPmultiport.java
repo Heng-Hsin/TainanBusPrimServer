@@ -468,6 +468,9 @@ public static void LastContact2(){
     	    	        		  
     	    	        		  IPCCommunication.put(packet.getAddress().toString(), new java.util.Date());
     	    	        	  }
+    	        		  
+    	        		  SystemLogger.WriteLog(bytesToHex(recv));
+    	        		  
     	        	  }catch(Exception e){
     	        		  System.out.println("IPCCommunication HashTable Error");
     	        		  e.printStackTrace();

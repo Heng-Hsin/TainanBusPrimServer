@@ -222,6 +222,7 @@ public class DB_ThreadPool extends Thread {
         	}catch(Exception e){
         		e.printStackTrace();
         		System.out.println("Error in Collecting Remote DB data");
+        		SystemLogger.WriteLog(e.toString());
         		
         	}
         	System.out.println(Thread.currentThread().getName() + " Ends  Data Collecting " + id);  
