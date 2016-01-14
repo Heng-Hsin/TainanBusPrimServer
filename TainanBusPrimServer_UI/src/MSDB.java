@@ -304,6 +304,20 @@ public static String[] getLatestCommand(){
       return x;
 }
 
+public static String[] getLatestCommand_OTA(){
+	
+	Vector a =dbGetString("SELECT TOP 1 [UpdateStatus],[UpdateTime] FROM ["+DB_database_name+"].[dbo].[OTA_Tab] order by [UpdateTime] desc");
+	
+	String[] x= new String[a.size()];
+     
+      for(int i=0;i<a.size();i++){
+    	x[i]= (String) a.get(i);
+    	    	    	
+    	  //System.out.println(x[i]);
+      }
+      return x;
+}
+
 public static int GotTheCommand(String Time){
 	int a=0;
 			
@@ -311,6 +325,24 @@ public static int GotTheCommand(String Time){
 	 
 	 return a;
 }
+
+public static int GotTheCommand_OTA(String Time){
+	int a=0;
+			
+	 a =dbUpdate(" UPDATE ["+DB_database_name+"].[dbo].[OTA_Tab] SET [UpdateStatus]='1' WHERE [UpdateTime]='"+Time+"';");	
+	 
+	 return a;
+}
+
+public static int Finished_OTA(String Time){
+	int a=0;
+			
+	 a =dbUpdate(" UPDATE ["+DB_database_name+"].[dbo].[OTA_Tab] SET [time]=getdate() WHERE [UpdateTime]='"+Time+"';");	
+	 
+	 return a;
+}
+
+
 	
 public static String[] getTrigID(String xroadid , String direct){
 		
@@ -411,6 +443,8 @@ public static String[] getTrigID(String xroadid , String direct){
 		
 		return inttime;
 	}
+	
+	
 	
 	public static String getGroupid(String deviceid){
 		String groupid="";
@@ -584,6 +618,22 @@ public static String[] getTrigID(String xroadid , String direct){
 	    	 //addr="0"+addr;
 	     addr=addr.toUpperCase();
 		return addr;
+	}
+   
+   public static String getWebSwitchStatus(String roadid){
+		String Switch="";
+		int temp=0;
+		Vector a =dbGetString("SELECT [Infor] FROM ["+DB_database_name+"].[dbo].[BusPrority_CrossRoad_Info_Tab]"
+				+ "where [CrossRoadID]='"+roadid+"'");
+		
+		
+		Switch= a.toString().replace("[", "").replace("]", "").replace(" ", "");
+	     //temp = Integer.parseInt(addr);
+	     //addr=Integer.toHexString(temp);
+	     //while(addr.length()<4)
+	    	 //addr="0"+addr;
+	     
+		return Switch;
 	}
 	
 	public static String[] faileddeviceid(String time){  // search starts from time      time ex:"2014-08-04"

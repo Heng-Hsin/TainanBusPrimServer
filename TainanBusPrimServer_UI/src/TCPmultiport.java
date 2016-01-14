@@ -166,7 +166,7 @@ public class TCPmultiport extends Thread {
 			}else{
 				
 				
-				MSDB.updateIPCOnOff(temp,4);
+				//MSDB.updateIPCOnOff(temp,4);
 				//System.out.println(" Key "+key+" changed <"+temp+">");
 				
 			}
@@ -238,7 +238,7 @@ public static void LastContact2(){
 				
 			}else{
 
-				MSDB.updateIPCOnOff(temp,4);
+				//MSDB.updateIPCOnOff(temp,4);
 				//System.out.println(" Key "+key+" changed <"+temp+">");
 				
 			}
@@ -487,7 +487,7 @@ public static void LastContact2(){
         	        		  //MSDB.updateIPCStatus(from,9);
         	        		  MSDB.updateIPCStatus_fromAddr(Addr,9);
         	        		  //MSDB.updateIPCOnOff(from,4);
-        	        		  MSDB.updateIPCOnOff_fromAddr(Addr,4);
+        	        		  //MSDB.updateIPCOnOff_fromAddr(Addr,4);
         	        		  System.out.println("BusPrime On "+from+" Addr "+Addr);
         	        		  SystemLogger.WriteLog("BusPrime On "+from+" Addr "+Addr);
         	        		  }
@@ -495,7 +495,7 @@ public static void LastContact2(){
             	        		  //MSDB.updateIPCStatus(from,8);
             	        		  MSDB.updateIPCStatus_fromAddr(Addr,8);
             	        		  //MSDB.updateIPCOnOff(from,4);
-            	        		  MSDB.updateIPCOnOff_fromAddr(Addr,4);
+            	        		  //MSDB.updateIPCOnOff_fromAddr(Addr,4);
             	        		  System.out.println("BusPrime Off "+from+" Addr "+Addr);
             	        		  SystemLogger.WriteLog("BusPrime Off "+from+" Addr "+Addr);
             	        		  }

@@ -57,7 +57,7 @@ public class Server_UI extends JFrame {
 	public static String[] IPCIP;
 	public static String[] ThreeGIP;  // All TC IP 
 	public static String[] MasterIP;  // All IPC IP
-	
+	public static String[] AllCrossRoadID;  // All CrossRoadID
 
 	public static String DBDriver;
 	public static String DB_connect_string;
@@ -1068,11 +1068,13 @@ public class Server_UI extends JFrame {
 				//IPCIP =  MSDB.getIPCIP();
 				ThreeGIP = MSDB.getAll3G_IP();
 				MasterIP =MSDB.getAllMasters_IP();
+				AllCrossRoadID=MSDB.getallRoadid();
 				
 				DBconnection();
 				IPCconnection();
 				CrossRoadCollector();
 				Data_Compare();
+				WebSwitchScan();
 				
 				if(mssql.dbConnection()){
 					
@@ -1134,6 +1136,76 @@ public class Server_UI extends JFrame {
 	        thread.start();
 	    }
 	 
+	 private static void WebSwitchScan() {
+	        Thread thread = new Thread(new Runnable() {
+	            @Override
+	            public void run() {
+	                while (true) {
+	                    
+	                    try {
+	                        Thread.sleep(1000*60);
+	                        
+	                        for(String a:AllCrossRoadID){
+	                        	String OnOff=MSDB.getWebSwitchStatus(a);
+	                        	
+	                        	if (OnOff.contains("8")){
+									
+									
+									//System.out.println("Group "+m);
+								     String GroupID= MSDB.getGroupID(a);
+									 //String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(Switchip);
+									 String MasterIP=MSDB.getCrossRoad_IP(GroupID);
+									 //for(String c:CrossRoadAddr){
+										 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+										byte[] cmd2=MessageCreator.createpackage("01",a, "5F800100");  //1.Seq 2.Addr 3.�ʥ]���e
+										String message=Protocol.bytesToHex(cmd2);
+									 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+											UDPSender.Send(MasterIP,"20000",message);
+											
+											System.out.println("Sent WebScan Off Switch CrossRoad "+a+" IP "+MasterIP);
+									 //}
+																	
+							
+							
+							//JFrame frame= new JFrame();
+		                    //JOptionPane.showMessageDialog(frame,"Sent Off Message to "+Switchip);
+							
+							}else if(OnOff.contains("9")){
+								
+								
+									//System.out.println("Group "+m);
+								     String GroupID= MSDB.getGroupID(a);
+									 //String[] CrossRoadAddr=MSDB.getCrossRoadAddr_Group(Switchip);
+									 String MasterIP=MSDB.getCrossRoad_IP(GroupID);
+									 //for(String c:CrossRoadAddr){
+										 //System.out.println("CrossRoad Addr "+c+" Send to "+MasterIP);									 
+										byte[] cmd2=MessageCreator.createpackage("01",a, "5F800101");  //1.Seq 2.Addr 3.�ʥ]���e
+										String message=Protocol.bytesToHex(cmd2);
+									 		//System.out.println("Message  " + Protocol.bytesToHex(cmd2));
+											UDPSender.Send(MasterIP,"20000",message);	
+											System.out.println("Sent WebScan On Switch CrossRoad "+a+" IP "+MasterIP);
+									 //}
+																	
+
+								
+							//JFrame frame= new JFrame();
+		                    //JOptionPane.showMessageDialog(frame,"Sent On Message to "+Switchip);
+							}		
+	                        	
+	                        }
+	                        
+	                       
+	                	    
+	                    } catch (Exception ex) {
+	                        ex.printStackTrace();
+	                        System.out.println("Error in WebSwitchScan");
+	                    }
+	                }
+	            }
+	        });
+	        thread.start();
+	    }
+	 
 	 
 	 private void DBconnection() {
 	        Thread thread = new Thread(new Runnable() {
@@ -1187,7 +1259,7 @@ public class Server_UI extends JFrame {
 	                    	Thread.sleep(1000*60*1);
 	                    	
 	                    	System.out.println("IPC Connection Check");
-	                    	//WebSiteCommands();
+	                    	WebSiteCommands();
 	                    	btnNewButton_10.doClick();
 	                    	//TCPmultiport.LastContact2();
 	                    	
@@ -1547,11 +1619,6 @@ public class Server_UI extends JFrame {
 	            					}
 	            					
 	            					
-	            					
-	            					
-	            					
-	            					
-	            					
 	            				}
 	            				
 	            				
@@ -1564,6 +1631,72 @@ public class Server_UI extends JFrame {
 		            		System.out.println("Error in WebSiteCommands ");
 		            		
 		            	}
+	            		
+	            		
+	            		
+	            		try{
+	            				            		
+	            			String[] usercommands=MSDB.getLatestCommand_OTA();
+	            			
+	            			if(usercommands[0].contains("0")){
+	            				
+	            				System.out.println("New OTA Command from User Get to it !!");
+	            				MSDB.GotTheCommand_OTA(usercommands[1]);  // Mark the command as acknowledged
+	            				
+	            				Thread thread = new Thread(new Runnable() {
+            			            @Override
+            			            public void run() {
+            			            		            		
+            			            		try{		            									
+            			        				
+            			            			String[] AllMastersIP=MSDB.getAllMasters_IP();
+            			        				String uploadport="8002";
+            			        				String uploadfilepath="C:\\Users\\Administrator\\Desktop\\AAAAA\\LatestVersion\\";
+            			        				String uploadfilename="BusPriority_IPC.bin";
+            			        				
+            			        				String fail=" ";
+            			        				
+            			        				 for(String t:AllMastersIP){
+            			        					 boolean result=HttpMultipartUpload.Upload(t+":"+uploadport,uploadfilepath,uploadfilename);
+            			        						
+            			        						if(result){
+            			        								System.out.println("Uploaded IPC "+t);
+            			        	                    }else{	                    	
+            			        	                    	fail=fail+" "+t;
+            			        	                    }
+            			        				 }
+            			        				 
+            			        				 MSDB.Finished_OTA(usercommands[1]); 
+            			        				 	 		        				
+            			        				/*				
+            			        				JFrame frame= new JFrame();
+            			        				if(fail==" "){
+            			        					JOptionPane.showMessageDialog(frame,"Upload Finished "+fail);
+            			        				}else{
+            			        					JOptionPane.showMessageDialog(frame,"Upload Fail IPC "+fail);
+            			        					}
+            			            			*/
+            			        				 
+            				            	}catch(Exception e){
+            				            		e.printStackTrace();
+            				            		System.out.println("Error in Multi-Upload IPC OTA ");
+            				            		MSDB.Finished_OTA(usercommands[1]);
+            				            		
+            				            	}
+            			            	
+            			            }
+            			        });
+            			        thread.start();
+	            				
+	            				
+	            			}
+
+	            			
+	            		}catch(Exception dd){
+	            			
+	            			dd.printStackTrace();
+		            		System.out.println("Error in WebSiteCommands OTA commands");
+	            		}
 	            	
 	            }
 	        });
