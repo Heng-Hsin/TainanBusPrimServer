@@ -1143,7 +1143,7 @@ public class Server_UI extends JFrame {
 	                while (true) {
 	                    
 	                    try {
-	                        Thread.sleep(1000*60);
+	                        Thread.sleep(1000*60*10);
 	                        
 	                        for(String a:AllCrossRoadID){
 	                        	String OnOff=MSDB.getWebSwitchStatus(a);
@@ -1256,7 +1256,7 @@ public class Server_UI extends JFrame {
 	        				
 	        				
 	        				
-	                    	Thread.sleep(1000*60*1);
+	                    	Thread.sleep(1000*60*10);
 	                    	
 	                    	System.out.println("IPC Connection Check");
 	                    	WebSiteCommands();
